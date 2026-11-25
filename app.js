@@ -283,40 +283,44 @@ void main(){
   const SMS = 'sms:+16028157122?&body=';
   // What the owner does (his messages, 24 nov): 2005–2009 Prius → hybrid batteries, dash displays, inverters;
   // 2010–2015 Prius → buy, sell & fix anything; A/C → any Prius up to 2015. Nothing 2016 and newer.
-  // `spot` = where that part sits on the car drawing (viewBox 600×230).
+  // `car` = which real photo (gen2 = 2005–2009, gen3 = 2010–2015); `spot` = where that part sits on that photo, in % (x, y).
   const RIDES = {
-    battery: { name: 'Hybrid Battery', years: 'Prius 2005–2009', tag: 'HV BATTERY', spot: [407, 127], cta: 'Book battery service',
+    battery: { name: 'Hybrid Battery', years: 'Prius 2005–2009', tag: 'HV BATTERY', car: 'gen2', spot: [68, 64], cta: 'Book battery service',
       items: ['Diagnosis, repair &amp; service of the hybrid battery pack', 'Red triangle, “Check Hybrid System” or mileage dropping? Start here', 'Not sure? Take the battery check below'] },
-    display: { name: 'Dash Display', years: 'Prius 2005–2009', tag: 'DISPLAY', spot: [268, 96], cta: 'Book display repair',
+    display: { name: 'Dash Display', years: 'Prius 2005–2009', tag: 'DISPLAY', car: 'gen2', spot: [32, 36], cta: 'Book display repair',
       items: ['Dash display gone dark, dim or flickering', 'We fix the display on 2005–2009 Prius'] },
-    inverter: { name: 'Inverter', years: 'Prius 2005–2009', tag: 'INVERTER', spot: [150, 116], cta: 'Book inverter repair',
+    inverter: { name: 'Inverter', years: 'Prius 2005–2009', tag: 'INVERTER', car: 'gen2', spot: [15, 47], cta: 'Book inverter repair',
       items: ['Inverter diagnosis &amp; repair for 2005–2009 Prius', 'Warning lights on the dash? Text us what it says'] },
-    gen3: { name: 'Buy · Sell · Fix', years: 'Prius 2010–2015', tag: '2010–2015', spot: [330, 122], cta: 'Book or ask about a Prius',
+    gen3: { name: 'Buy · Sell · Fix', years: 'Prius 2010–2015', tag: '2010–2015', car: 'gen3', spot: [55, 48], cta: 'Book or ask about a Prius',
       items: ['We buy 2010–2015 Prius', 'We sell 2010–2015 Prius', 'We fix anything on them'] },
-    ac: { name: 'A/C', years: 'Any Prius up to 2015', tag: 'A/C', spot: [92, 132], cta: 'Book A/C service',
+    ac: { name: 'A/C', years: 'Any Prius up to 2015', tag: 'A/C', car: 'gen2', spot: [7, 58], cta: 'Book A/C service',
       items: ['A/C service for any Prius up to 2015', 'Recovery · vacuum · recharge', 'Starting at $80 — get it while it’s hot!', 'We don’t work on 2016 and newer'] },
   };
+  // Real photos from Wikimedia Commons (CC BY-SA): background removed; the 2005–2009 one mirrored to face left.
+  const CARS = {
+    gen2: { ratio: '1374 / 505', credit: 'Photo: <a href="https://commons.wikimedia.org/wiki/File:Toyota_Prius_side.jpg" target="_blank" rel="noopener">Chris 73</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a> (edited)' },
+    gen3: { ratio: '1358 / 586', credit: 'Photo: <a href="https://commons.wikimedia.org/wiki/File:Prius_Side_Profile_(30597326822).jpg" target="_blank" rel="noopener">formulanone</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/" target="_blank" rel="noopener">CC BY-SA 2.0</a> (edited)' },
+  };
   const tabs = $$('.ride-tabs [role=tab]');
-  const carBody = $('.car-body');
-  let carLen = 0;
-  try { carLen = carBody.getTotalLength(); } catch (_) { /* old browsers */ }
+  const carPhoto = $('#carPhoto'), hot = $('#hot');
   function selectRide(key, animate = true) {
     const d = RIDES[key]; if (!d) return;
     tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.ride === key)));
     $('#rideName').innerHTML = d.name;
     $('#rideYears').textContent = d.years;
     $('#rideTag').textContent = d.tag;
-    $('#spot').setAttribute('transform', 'translate(' + d.spot[0] + ' ' + d.spot[1] + ')');
     $('#rideList').innerHTML = d.items.map(i => `<li>${i}</li>`).join('');
     const cta = $('#rideCta'); cta.textContent = d.cta; cta.dataset.book = key;
-    $('#spot').classList.toggle('cold', key === 'ac');
+    // the real Prius of those years + the glowing dot on the part
+    $$('.car-img', carPhoto).forEach(img => img.classList.toggle('on', img.dataset.gen === d.car));
+    carPhoto.style.aspectRatio = CARS[d.car].ratio;
+    $('#carCredit').innerHTML = CARS[d.car].credit;
+    hot.style.left = d.spot[0] + '%';
+    hot.style.top = d.spot[1] + '%';
+    hot.classList.toggle('cold', key === 'ac');
     if (animate && !reduce) {
       const info = $('.ride-info'); info.classList.remove('swap'); void info.offsetWidth; info.classList.add('swap');
-      const car = $('#car'); car.classList.remove('zap'); void car.offsetWidth; car.classList.add('zap');
-      if (carLen && carBody.animate) {
-        carBody.style.strokeDasharray = carLen;
-        carBody.animate([{ strokeDashoffset: carLen }, { strokeDashoffset: 0 }], { duration: 900, easing: 'cubic-bezier(.2,.8,.2,1)' });
-      }
+      carPhoto.classList.remove('zap'); void carPhoto.offsetWidth; carPhoto.classList.add('zap');
     }
   }
   tabs.forEach((t, i) => {

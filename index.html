@@ -205,21 +205,15 @@
     <div class="ride-panel reveal" id="ridePanel" role="tabpanel">
       <div class="ride-visual">
         <div class="ride-grid" aria-hidden="true"></div>
-        <svg class="car" id="car" viewBox="0 0 600 230" aria-hidden="true">
-          <defs>
-            <linearGradient id="carFill" x1="0" x2="1">
-              <stop offset="0" stop-color="#1f8bff" stop-opacity=".16"/>
-              <stop offset="1" stop-color="#ff6a00" stop-opacity=".16"/>
-            </linearGradient>
-            <filter id="glow" x="-20%" y="-40%" width="140%" height="180%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-          </defs>
-          <path class="car-body" d="M42 156 L42 132 Q44 116 72 110 L214 90 Q262 50 332 42 Q404 38 474 64 L544 96 L550 104 L554 142 Q554 156 540 158 L502 158 A46 46 0 0 0 410 158 L198 158 A46 46 0 0 0 106 158 L56 158 Q42 158 42 156 Z"/>
-          <path class="car-win" d="M226 92 Q266 60 328 54 L332 92 Z M344 54 Q402 52 454 72 L470 94 L344 94 Z"/>
-          <circle class="car-wheel" cx="152" cy="160" r="36"/><circle class="car-wheel" cx="456" cy="160" r="36"/>
-          <circle class="car-hub" cx="152" cy="160" r="12"/><circle class="car-hub" cx="456" cy="160" r="12"/>
-          <g class="spot" id="spot" transform="translate(407 127)"><circle class="spot-ring" r="30"/><circle class="spot-ring r2" r="30"/><circle class="spot-core" r="16"/><path class="spot-bolt" d="M2-10l-9 12h7l-3 9 10-13h-7l2-8z"/></g>
-        </svg>
+        <div class="car-photo" id="carPhoto">
+          <img class="car-img on" data-gen="gen2" src="assets/prius-2005-2009.webp" width="1374" height="505"
+               alt="A real 2005–2009 Toyota Prius (second generation), side view">
+          <img class="car-img" data-gen="gen3" src="assets/prius-2010-2015.webp" width="1358" height="586" loading="lazy"
+               alt="A real 2010–2015 Toyota Prius (third generation)">
+          <span class="hot" id="hot" style="left:68%;top:64%" aria-hidden="true"><i class="ring"></i><i class="ring r2"></i><b><svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-2 8 10-13h-7l1-7z"/></svg></b></span>
+        </div>
         <span class="ride-tag" id="rideTag">HV BATTERY</span>
+        <p class="car-credit" id="carCredit"></p>
       </div>
       <div class="ride-info">
         <p class="ride-years" id="rideYears">Prius 2005–2009</p>
