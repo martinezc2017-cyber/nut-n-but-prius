@@ -434,3 +434,6 @@ strong{color:#fff;font-weight:700}
 
 .opts.years.n3{grid-template-columns:repeat(3,1fr)}
 .services .sec-head .lead{margin-top:14px}
+.foot .credit{display:inline-block;margin-top:6px;font-size:12px;letter-spacing:.04em;color:#6f7888}
+.foot .credit a{color:#9ba4b4;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.15)}
+.foot .credit a:hover{color:#fff}
