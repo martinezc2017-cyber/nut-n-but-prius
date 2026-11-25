@@ -415,6 +415,14 @@ void main(){
   const coarse = matchMedia('(pointer: coarse)').matches;
   const state = { step: 1, service: '', year: '', day: '', time: '', how: 'text' };
   let emailOn = false; // the site turns the email option on (GET /api/book) once the owner's address is verified
+  // booking number, same shape the Worker uses: NNB-MMDD-XXXX (Arizona date, no look-alike characters)
+  let ref = '';
+  const REF_CHARS = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+  function makeRef() {
+    const md = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Phoenix', month: '2-digit', day: '2-digit' }).format(new Date()).replace('/', '');
+    const r = crypto.getRandomValues(new Uint8Array(4));
+    return 'NNB-' + md + '-' + Array.from(r, b => REF_CHARS[b % REF_CHARS.length]).join('');
+  }
   const steps = $$('.book-step', dlg);
   const nextBtn = $('#bookNext'), backBtn = $('#bookBack'), nameIn = $('#bookName'), notesIn = $('#bookNotes'), sendA = $('#bookSend');
   const phoneIn = $('#bookPhone'), locIn = $('#bookLoc'), errEl = $('#bookErr');
@@ -466,7 +474,7 @@ void main(){
   }
   function message() {
     const notes = notesIn.value.trim();
-    return ['Booking request — Nut N But Prius', 'Service: ' + SERVICE_NAME[state.service], (state.service === 'buy' ? 'Looking for: ' : 'Car: ') + yearLabel(),
+    return ['Booking request — Nut N But Prius', 'Booking #' + ref, 'Service: ' + SERVICE_NAME[state.service], (state.service === 'buy' ? 'Looking for: ' : 'Car: ') + yearLabel(),
       'When: ' + state.day + ', ' + state.time, 'Name: ' + nameIn.value.trim()].concat(notes ? ['Notes: ' + notes] : []).join('\n');
   }
   const smsLink = body => 'sms:' + SHOP + '?&body=' + encodeURIComponent(body);
@@ -516,7 +524,9 @@ void main(){
     let ok = false;
     try {
       const r = await fetch('/api/book', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
-      ok = r.ok && (await r.json()).ok === true;
+      const j = r.ok ? await r.json() : {};
+      ok = j.ok === true;
+      if (ok && j.ref) { ref = j.ref; $('#doneRef').textContent = ref; } // the number in his email
     } catch (_) { ok = false; }
     if (ok) {
       go(5);
@@ -555,6 +565,8 @@ void main(){
     $('#doneCopy').textContent = 'Copy message';
     $('#doneText').innerHTML = DONE_PHONE;
     $('.book-done h3').textContent = 'Request ready!';
+    ref = makeRef();
+    $('#doneRef').textContent = ref;
     dlg.showModal();
     if (lenis) lenis.stop();
     if (SERVICE_NAME[service]) { pick($('.opts[data-name="service"]', dlg), $(`.opt[data-value="${service}"]`, dlg)); go(2); }

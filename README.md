@@ -55,7 +55,11 @@ contesta por texto para confirmar. `https://nutnbutprius.com/#book` abre la vent
   Protección: campo trampa, límite de 5 por minuto por visitante (`BOOK_LIMIT`), largos máximos, teléfono de 10 a 15 dígitos.
 - **Encendido (25 nov, después de que la prueba llegó a la bandeja de entrada de Carlos):** la variable `EMAIL_BOOKING` en `wrangler.jsonc` ("on" la enseña; "off" la esconde y el Worker rechaza). info@ sale en la sección del taller, el pie y el JSON-LD.
   Prueba sin encender: `POST /api/book` con el encabezado `x-booking-test` = secreto `BOOKING_TEST_KEY`.
-- Secretos (`npx wrangler secret put …`): `BOOKING_TO` (el Gmail del dueño, no se escribe en este repo público) y `BOOKING_TEST_KEY`.
+- Secretos (`npx wrangler secret put …`): `BOOKING_TO` (el Gmail del dueño, no se escribe en este repo público),
+  `BOOKING_TEST_KEY` y `BOOKING_TEST_TO` (las pruebas van ahí con «[TEST]» en el asunto, nunca al dueño).
+- **Número de cita:** NNB-MMDD-XXXX (fecha de Arizona + 4 caracteres sin parecidos). Va en el asunto y arriba del correo, en el
+  mensaje de texto y en la pantalla final del cliente. Sin base de datos: sirve para identificar la cita, no lleva cuenta.
+- El correo lleva el logo arriba (`assets/email-logo.jpg`, 480×320).
 
 ## De dónde salen los datos
 - Logo: foto principal de su perfil de Google Maps (original, 1230×1278).

@@ -11,15 +11,26 @@ const GOOGLE_VERIFICATION = 'google0ec3fca49f063bff.html'; // Search Console, ac
 const FROM = { email: 'bookings@nutnbutprius.com', name: 'Nut N But Prius website' };
 const LIMITS = { service: 60, year: 40, day: 60, time: 20, name: 60, phone: 30, location: 120, notes: 400 };
 
+// Booking number (Carlos, 25 nov: «número de referencia por si en un futuro quiere organizarse»): NNB-MMDD-XXXX, the date in
+// Arizona time and 4 characters with no look-alikes (0/O, 1/I/L). The page makes the same kind for bookings sent by text.
+const REF_CHARS = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+function makeRef() {
+  const md = new Intl.DateTimeFormat('en-US', { timeZone: 'America/Phoenix', month: '2-digit', day: '2-digit' }).format(new Date()).replace('/', '');
+  const r = crypto.getRandomValues(new Uint8Array(4));
+  return 'NNB-' + md + '-' + [...r].map(b => REF_CHARS[b % REF_CHARS.length]).join('');
+}
+const LOGO = 'https://nutnbutprius.com/assets/email-logo.jpg';
+
 const json = (body, status = 200) => new Response(JSON.stringify(body), {
   status, headers: { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'no-store' } });
 const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 async function book(request, env) {
-  if (env.EMAIL_BOOKING !== 'on' && request.headers.get('x-booking-test') !== env.BOOKING_TEST_KEY) {
-    return json({ ok: false, error: 'off' }, 503);
-  }
-  if (!env.EMAIL || !env.BOOKING_TO) return json({ ok: false, error: 'not configured' }, 503);
+  // a test (header = secret BOOKING_TEST_KEY) goes to BOOKING_TEST_TO, never to the owner
+  const test = !!env.BOOKING_TEST_KEY && request.headers.get('x-booking-test') === env.BOOKING_TEST_KEY;
+  if (env.EMAIL_BOOKING !== 'on' && !test) return json({ ok: false, error: 'off' }, 503);
+  const to = test ? env.BOOKING_TEST_TO : env.BOOKING_TO;
+  if (!env.EMAIL || !to) return json({ ok: false, error: 'not configured' }, 503);
   let b;
   try { b = await request.json(); } catch (_) { return json({ ok: false, error: 'bad request' }, 400); }
   if (b.website) return json({ ok: true }); // honeypot: bots fill the hidden field, people never see it
@@ -33,25 +44,28 @@ async function book(request, env) {
     const { success } = await env.BOOK_LIMIT.limit({ key: request.headers.get('cf-connecting-ip') || 'x' });
     if (!success) return json({ ok: false, error: 'slow down' }, 429);
   }
-  const rows = [['Service', f.service], [f.service === 'Buy a Prius' ? 'Looking for' : 'Car', f.year],
+  const ref = makeRef();
+  const rows = [['Booking #', ref], ['Service', f.service], [f.service === 'Buy a Prius' ? 'Looking for' : 'Car', f.year],
     ['When', [f.day, f.time].filter(Boolean).join(', ')], ['Name', f.name], ['Phone', f.phone],
     ['Location', f.location || '—'], ['Notes', f.notes || '—']];
   const tel = '+' + (digits.length === 10 ? '1' + digits : digits);
   const text = ['New booking request from nutnbutprius.com', '']
     .concat(rows.map(([k, v]) => k + ': ' + v), ['', 'Text or call the customer at ' + f.phone + ' to confirm the time.']).join('\n');
-  const html = '<div style="font:16px/1.5 Arial,sans-serif;color:#111"><h2 style="margin:0 0 12px">New booking request</h2>'
+  const html = '<div style="font:16px/1.5 Arial,sans-serif;color:#111">'
+    + '<img src="' + LOGO + '" width="200" height="133" alt="Nut N But Prius" style="display:block;border-radius:12px;margin:0 0 14px">'
+    + '<h2 style="margin:0 0 12px">New booking request</h2>'
     + '<table cellpadding="6" style="border-collapse:collapse">'
     + rows.map(([k, v]) => '<tr><td style="color:#666;vertical-align:top">' + k + '</td><td><b>' + esc(v).replace(/\n/g, '<br>') + '</b></td></tr>').join('')
     + '</table><p style="margin-top:18px"><a href="sms:' + tel + '" style="background:#ff6a00;color:#fff;padding:12px 18px;border-radius:24px;text-decoration:none;font-weight:bold">Text ' + esc(f.phone) + '</a>'
     + ' &nbsp; <a href="tel:' + tel + '" style="color:#ff6a00;font-weight:bold">Call</a></p>'
     + '<p style="color:#888;font-size:13px">Sent from the Book Now window on nutnbutprius.com</p></div>';
   try {
-    await env.EMAIL.send({ to: env.BOOKING_TO, from: FROM, subject: 'New booking: ' + f.service + ' · ' + f.year + ' · ' + f.name, text, html });
+    await env.EMAIL.send({ to, from: FROM, subject: (test ? '[TEST] ' : '') + 'New booking #' + ref + ': ' + f.service + ' · ' + f.year + ' · ' + f.name, text, html });
   } catch (e) {
     console.log('booking email failed', e && (e.code || e.message));
     return json({ ok: false, error: 'send failed' }, 502);
   }
-  return json({ ok: true });
+  return json({ ok: true, ref });
 }
 
 export default {
