@@ -281,17 +281,20 @@ void main(){
 
   /* ================= ride selector ================= */
   const SMS = 'sms:+16028157122?&body=';
-  // 2005–2009 Prius only (the client, 24 nov): hybrid batteries, dash displays, A/C and inverters — nothing else.
+  // What the owner does (his messages, 24 nov): 2005–2009 Prius → hybrid batteries, dash displays, inverters;
+  // 2010–2015 Prius → buy, sell & fix anything; A/C → any Prius. Prius only.
   // `spot` = where that part sits on the car drawing (viewBox 600×230).
   const RIDES = {
-    battery: { name: 'Hybrid Battery', tag: 'HV BATTERY', spot: [407, 127], cta: 'Text about my battery', body: 'Hi! My 2005-2009 Prius hybrid battery ',
+    battery: { name: 'Hybrid Battery', years: 'Prius 2005–2009', tag: 'HV BATTERY', spot: [407, 127], cta: 'Book battery service',
       items: ['Diagnosis, repair &amp; service of the hybrid battery pack', 'Red triangle, “Check Hybrid System” or mileage dropping? Start here', 'Not sure? Take the battery check below'] },
-    display: { name: 'Dash Display', tag: 'DISPLAY', spot: [268, 96], cta: 'Text about my display', body: 'Hi! My Prius dash display ',
+    display: { name: 'Dash Display', years: 'Prius 2005–2009', tag: 'DISPLAY', spot: [268, 96], cta: 'Book display repair',
       items: ['Dash display gone dark, dim or flickering', 'We fix the display on 2005–2009 Prius'] },
-    ac: { name: 'A/C', tag: 'A/C', spot: [92, 132], cta: 'Book my A/C service', body: 'Hi! I need A/C service for my Prius. ',
-      items: ['A/C service for 2005–2009 Prius', 'Recovery · vacuum · recharge', 'Starting at $80 — get it while it’s hot!'] },
-    inverter: { name: 'Inverter', tag: 'INVERTER', spot: [150, 116], cta: 'Text about my inverter', body: 'Hi! I think my Prius inverter ',
+    inverter: { name: 'Inverter', years: 'Prius 2005–2009', tag: 'INVERTER', spot: [150, 116], cta: 'Book inverter repair',
       items: ['Inverter diagnosis &amp; repair for 2005–2009 Prius', 'Warning lights on the dash? Text us what it says'] },
+    gen3: { name: 'Buy · Sell · Fix', years: 'Prius 2010–2015', tag: '2010–2015', spot: [330, 122], cta: 'Book or ask about a Prius',
+      items: ['We buy 2010–2015 Prius', 'We sell 2010–2015 Prius', 'We fix anything on them'] },
+    ac: { name: 'A/C', years: 'Any Prius', tag: 'A/C', spot: [92, 132], cta: 'Book A/C service',
+      items: ['A/C service for any Prius, any year', 'Recovery · vacuum · recharge', 'Starting at $80 — get it while it’s hot!'] },
   };
   const tabs = $$('.ride-tabs [role=tab]');
   const carBody = $('.car-body');
@@ -301,10 +304,11 @@ void main(){
     const d = RIDES[key]; if (!d) return;
     tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.ride === key)));
     $('#rideName').innerHTML = d.name;
+    $('#rideYears').textContent = d.years;
     $('#rideTag').textContent = d.tag;
     $('#spot').setAttribute('transform', 'translate(' + d.spot[0] + ' ' + d.spot[1] + ')');
     $('#rideList').innerHTML = d.items.map(i => `<li>${i}</li>`).join('');
-    const cta = $('#rideCta'); cta.textContent = d.cta; cta.href = SMS + encodeURIComponent(d.body);
+    const cta = $('#rideCta'); cta.textContent = d.cta; cta.dataset.book = key;
     $('#spot').classList.toggle('cold', key === 'ac');
     if (animate && !reduce) {
       const info = $('.ride-info'); info.classList.remove('swap'); void info.offsetWidth; info.classList.add('swap');
@@ -370,12 +374,149 @@ void main(){
     }
   }
   $$('a[href^="#"]').forEach(a => a.addEventListener('click', e => {
-    const id = a.getAttribute('href'); const el = id.length > 1 ? $(id) : $('#top');
+    if (a.hasAttribute('data-book') || a.id === 'bookSend') return; // booking window / its link to Messages
+    const id = a.getAttribute('href');
+    if (!id || id[0] !== '#') return; const el = id.length > 1 ? $(id) : $('#top');
     if (!el) return;
     e.preventDefault();
     if (lenis) lenis.scrollTo(el, { offset: id === '#top' ? 0 : -70, duration: 1.4 });
     else el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
   }));
+
+  /* ================= booking: 4 steps, then the request goes to the shop by text ================= */
+  // The page has no server: the booking is a text message to the shop's phone, which he answers to confirm the time.
+  const SHOP = '+16028157122';
+  const SERVICE_NAME = { battery: 'Hybrid battery', display: 'Dash display', inverter: 'Inverter', gen3: 'Buy · Sell · Fix (2010–2015)', ac: 'A/C service' };
+  // The years offered depend on the service (the owner's own split). A/C is any Prius: by generation.
+  const GEN2 = ['2005', '2006', '2007', '2008', '2009'];
+  const YEARS = {
+    battery: GEN2, display: GEN2, inverter: GEN2,
+    gen3: ['2010', '2011', '2012', '2013', '2014', '2015', 'Looking to buy'],
+    ac: ['2001–2003', '2004–2009', '2010–2015', '2016–2022', '2023+'],
+  };
+  function buildYears(service) {
+    const box = $('#bookYears');
+    const list = YEARS[service] || GEN2;
+    box.className = 'opts years n' + list.length;
+    box.innerHTML = list.map(y => `<button type="button" class="opt${y.length > 4 ? ' opt-long' : ''}" data-value="${y}" aria-pressed="false"><b>${y}</b></button>`).join('');
+    state.year = '';
+  }
+  const DONE_PHONE = 'Your messages app opened with your booking. Hit <b>send</b> and he’ll text you back to confirm your time.';
+  const dlg = $('#book');
+  const coarse = matchMedia('(pointer: coarse)').matches;
+  const state = { step: 1, service: '', year: '', day: '', time: '' };
+  const steps = $$('.book-step', dlg);
+  const nextBtn = $('#bookNext'), backBtn = $('#bookBack'), nameIn = $('#bookName'), notesIn = $('#bookNotes'), sendA = $('#bookSend');
+
+  function buildDays() {
+    const box = $('#bookDays');
+    box.innerHTML = '';
+    const now = new Date();
+    for (let i = 0; i < 8; i++) {
+      const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+      const label = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-US', { weekday: 'short' });
+      const sub = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+      const value = d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+      box.insertAdjacentHTML('beforeend', `<button type="button" class="opt" data-value="${value}" aria-pressed="false"><b>${label}</b><small>${sub}</small></button>`);
+    }
+  }
+  function pick(group, btn) {
+    if (!group || !btn) return;
+    $$('.opt', group).forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+    state[group.dataset.name] = btn.dataset.value;
+    if (group.dataset.name === 'service') buildYears(btn.dataset.value);
+    refresh();
+  }
+  function ready() {
+    if (state.step === 1) return !!state.service;
+    if (state.step === 2) return !!state.year;
+    if (state.step === 3) return !!state.day && !!state.time;
+    if (state.step === 4) return nameIn.value.trim().length > 0;
+    return true;
+  }
+  function refresh() {
+    nextBtn.disabled = !ready();
+    nextBtn.textContent = state.step === 4 ? 'Send request' : 'Next';
+    // On phones the last button is a real link to Messages that the customer taps: in-app browsers
+    // (Facebook, Instagram) can block a script from opening it, but they let a tapped link through.
+    const touchSend = coarse && state.step === 4;
+    nextBtn.hidden = touchSend;
+    sendA.hidden = !touchSend;
+    if (touchSend) {
+      sendA.classList.toggle('is-off', !ready());
+      sendA.href = ready() ? smsLink(message()) : '#';
+    }
+    backBtn.style.visibility = state.step > 1 ? 'visible' : 'hidden';
+  }
+  function message() {
+    const notes = notesIn.value.trim();
+    return ['Booking request — Nut N But Prius', 'Service: ' + SERVICE_NAME[state.service], 'Car: ' + yearLabel(),
+      'When: ' + state.day + ', ' + state.time, 'Name: ' + nameIn.value.trim()].concat(notes ? ['Notes: ' + notes] : []).join('\n');
+  }
+  const smsLink = body => 'sms:' + SHOP + '?&body=' + encodeURIComponent(body);
+  const yearLabel = () => (state.year === 'Looking to buy' ? 'Looking to buy a Prius' : state.year + ' Prius');
+  function go(n) {
+    state.step = n;
+    steps.forEach(s => s.classList.toggle('on', Number(s.dataset.step) === n));
+    $('#bookBar').style.width = Math.min(100, n * 25) + '%';
+    $('#bookCount').textContent = n <= 4 ? 'Step ' + n + ' of 4' : 'Done';
+    $('#bookNav').hidden = n === 5;
+    if (n === 4) {
+      $('#bookSum').innerHTML = [SERVICE_NAME[state.service], yearLabel(), state.day, state.time].map(t => '<li>' + t + '</li>').join('');
+      if (!coarse) setTimeout(() => nameIn.focus({ preventScroll: true }), 250);
+    }
+    refresh();
+  }
+  dlg.addEventListener('click', e => {
+    if (e.target === dlg) { dlg.close(); return; } // tap on the dark backdrop
+    const btn = e.target.closest('.opt');
+    if (!btn) return;
+    pick(btn.closest('.opts'), btn);
+    if (state.step <= 2) setTimeout(() => { if (ready()) go(state.step + 1); }, 280); // one tap = next step
+  });
+  nextBtn.addEventListener('click', () => {
+    if (!ready()) return;
+    if (state.step < 4) { go(state.step + 1); return; }
+    const body = message();
+    go(5);
+    if (coarse) {
+      window.location.href = smsLink(body);
+    } else {
+      $('#doneText').textContent = 'Your booking request is ready.';
+      $('#donePre').textContent = body;
+      $('#doneSms').href = smsLink(body);
+      $('#doneDesk').hidden = false;
+    }
+  });
+  backBtn.addEventListener('click', () => { if (state.step > 1) go(state.step - 1); });
+  nameIn.addEventListener('input', refresh);
+  notesIn.addEventListener('input', refresh);
+  sendA.addEventListener('click', e => {
+    if (!ready()) { e.preventDefault(); return; }
+    setTimeout(() => go(5), 60); // let the tap open Messages, then show the confirmation
+  });
+  $('#bookForm').addEventListener('submit', e => { e.preventDefault(); nextBtn.click(); });
+  $('#doneCopy').addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText($('#donePre').textContent); $('#doneCopy').textContent = 'Copied!'; }
+    catch (_) { /* clipboard blocked: the message stays on screen to copy by hand */ }
+  });
+  $('#bookClose').addEventListener('click', () => dlg.close());
+  dlg.addEventListener('close', () => { if (lenis) lenis.start(); });
+  function openBook(service) {
+    if (typeof dlg.showModal !== 'function') { window.location.href = 'tel:' + SHOP; return; }
+    Object.assign(state, { step: 1, service: '', year: '', day: '', time: '' });
+    buildDays();
+    $$('.opt', dlg).forEach(b => b.setAttribute('aria-pressed', 'false'));
+    nameIn.value = ''; notesIn.value = '';
+    $('#doneDesk').hidden = true;
+    $('#doneCopy').textContent = 'Copy message';
+    $('#doneText').innerHTML = DONE_PHONE;
+    dlg.showModal();
+    if (lenis) lenis.stop();
+    if (SERVICE_NAME[service]) { pick($('.opts[data-name="service"]', dlg), $(`.opt[data-value="${service}"]`, dlg)); go(2); }
+    else go(1);
+  }
+  $$('[data-book]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openBook(a.dataset.book); }));
 
   /* ================= GSAP choreography ================= */
   function splitWords(el) {
