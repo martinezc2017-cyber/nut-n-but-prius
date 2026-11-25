@@ -577,3 +577,13 @@ section[id]{scroll-margin-top:108px}
 
 /* "Full service" (owner, 25 nov) stands out in the Gen 3 card */
 .card p b.full-svc{color:#fff}
+
+/* 2016 & newer: full service, prices vary (owner, 25 nov) */
+.newer{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:6px 18px;margin-top:20px;padding:20px 24px;border-radius:var(--r);
+  background:linear-gradient(90deg,rgba(31,139,255,.16),rgba(31,139,255,.04));box-shadow:inset 0 0 0 1px rgba(60,196,255,.45);text-decoration:none;color:var(--text)}
+.newer-years{grid-row:1/3;font:italic 900 28px/1 var(--head);text-transform:uppercase;color:var(--blue2)}
+.newer b{font:italic 900 26px/1 var(--head);text-transform:uppercase}
+.newer-sub{grid-column:2;color:var(--muted);font-size:14px}
+.newer i{grid-row:1/3;grid-column:3;font-style:normal;font-weight:800;color:var(--blue2);white-space:nowrap}
+@media (max-width:640px){ .newer{grid-template-columns:1fr auto} .newer-years{grid-row:auto;grid-column:1/-1;font-size:22px} .newer-sub{grid-column:1} .newer i{grid-row:2/4;grid-column:2} }
+.why-fine{margin-top:8px!important;font-size:13px!important;color:var(--muted)!important}

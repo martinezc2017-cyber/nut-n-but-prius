@@ -284,11 +284,12 @@ void main(){
   // What the owner does (his list, 25 nov): hybrid batteries 2005–2015 (reconditioned from $600 installed, new $3,500 installed);
   // inverters 2005–2015; 2010–2015 (Gen 3) "you name it, we fix it": JDM engine swaps from $2,200, factory ABS pumps installed
   // $2,200, suspension, A/C compressor, overheating, maintenance, full tune-ups; A/C $80 for any year Prius with R‑134a;
-  // dash displays only 2005–2009; buys 2010–2015 Prius in any condition (must be movable) and sells shop-checked cars. No 2016+.
+  // dash displays only 2005–2009 ($300); buys 2010–2015 Prius in any condition (must be movable) and sells shop-checked cars.
+  // 25 nov 12:56: 2016 and newer = full service, prices vary; diagnostic free only with the repair, else $120; mobile installation for a trip fee.
   // `car` = which real photo (gen2 = 2005–2009, gen3 = 2010–2015); `spot` = where that part sits on that photo, in % (x, y).
   const RIDES = {
     battery: { name: 'Hybrid Battery', years: 'Prius 2005–2015', tag: 'HV BATTERY', car: 'gen3', spot: [73, 56], cta: 'Book battery service',
-      items: ['Reconditioned battery: starting at $600 installed', 'Brand-new battery: $3,500 installed', 'Red triangle, “Check Hybrid System” or mileage dropping? Start here', 'Not sure? Take the battery check below'] },
+      items: ['Reconditioned battery: starting at $600 installed', 'Brand-new battery: $3,500 installed', 'Mobile installation available — trip fee', 'Red triangle, “Check Hybrid System” or mileage dropping? Start here', 'Not sure? Take the battery check below'] },
     inverter: { name: 'Inverter', years: 'Prius 2005–2015', tag: 'INVERTER', car: 'gen2', spot: [14, 45], cta: 'Book inverter repair',
       items: ['Inverter diagnosis &amp; repair for 2005–2015 Prius', 'Warning lights on the dash? Text us what it says'] },
     gen3: { name: 'Gen 3 Repair', years: 'Prius 2010–2015 · you name it, we fix it', tag: 'GEN 3', car: 'gen3', spot: [19, 31], cta: 'Book Gen 3 repair',
@@ -393,13 +394,13 @@ void main(){
   /* ================= booking: 4 steps, then the request goes to the shop by text ================= */
   // The page has no server: the booking is a text message to the shop's phone, which he answers to confirm the time.
   const SHOP = '+16028157122';
-  const SERVICE_NAME = { battery: 'Hybrid battery', inverter: 'Inverter', gen3: 'Gen 3 repair', display: 'Dash display', sell: 'Sell my Prius', buy: 'Buy a Prius', ac: 'A/C service ($80)' };
+  const SERVICE_NAME = { battery: 'Hybrid battery', inverter: 'Inverter', gen3: 'Gen 3 repair', display: 'Dash display', sell: 'Sell my Prius', buy: 'Buy a Prius', new: 'Full service (2016 & newer)', ac: 'A/C service ($80)' };
   // The years offered depend on the service (the owner's own split). A/C is any Prius with R‑134a: by generation.
   const span = (from, to) => Array.from({ length: to - from + 1 }, (_, i) => String(from + i));
   const GEN2 = span(2005, 2009), GEN3 = span(2010, 2015);
   const YEARS = {
     battery: span(2005, 2015), inverter: span(2005, 2015), display: GEN2,
-    gen3: GEN3, sell: GEN3, buy: GEN3.concat('Any year'),
+    gen3: GEN3, sell: GEN3, buy: GEN3.concat('Any year'), new: span(2016, 2026),
     ac: ['2001–2003', '2004–2009', '2010–2015'], // the R‑134a years; nothing 2016 and newer
   };
   function buildYears(service) {

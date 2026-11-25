@@ -15,7 +15,9 @@ Página del taller **Nut N But Prius** (Glendale, AZ · 602-815-7122). Hecha por
   cierre fija, no va `openingHoursSpecification` en el JSON-LD. Agendar no ofrece domingos.
 - **Por qué escogerlos (sus palabras, 25 nov):** se especializan en estos carros; escaneo de diagnóstico GRATIS para verificar
   la falla antes de todo, para que no compres la pieza equivocada; respaldan su trabajo, honestos y confiables. Sección `#why`.
-- **Nada 2016 o más nuevo.** Ya no hace «you call I install» (24/7).
+- **25 nov 12:56 (su mensaje):** «2016 and up full service, prices vary» (franja azul bajo las tarjetas y opción en agendar, años
+  2016–2026; dijo que mandará más datos) · el diagnóstico es gratis **solo si le hacen el trabajo**, si no **$120** (corregido en
+  todos lados) · **instalación a domicilio** con cobro de viaje (tarjeta de batería y selector). Ya no hace «you call I install» (24/7).
 - Pidió «top rated on ChatGPT»: **no se puso**. ChatGPT no califica negocios; sería una calificación inventada con el nombre de
   otra empresa. En su lugar: «Top rated on Google · 4.8 · 100 reviews», que sí es cierto.
 
