@@ -520,3 +520,10 @@ strong{color:#fff;font-weight:700}
 .chips .chip-scan{color:#d9f3ff;background:rgba(60,196,255,.12);box-shadow:inset 0 0 0 1px rgba(60,196,255,.55)}
 @media (max-width:900px){ .why-grid{grid-template-columns:1fr} }
 @media (prefers-reduced-motion:reduce){ .why-scan .pulse{animation:none;stroke-dashoffset:0} }
+
+/* owner, 25 nov: «at top of page hybrid batterys starting from $600 2005 to 2015; take out the inverters at the top» */
+.hero-price{display:grid;gap:6px;margin:-4px 0 16px}
+.hp-what{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font:italic 800 clamp(24px,2.3vw,32px)/1 var(--head);text-transform:uppercase;color:#fff}
+.hp-what em{font-style:normal;padding:7px 12px;border-radius:999px;font:700 14px/1 var(--body);letter-spacing:.08em;color:#ffd9bf;background:rgba(255,106,0,.12);box-shadow:inset 0 0 0 1px rgba(255,106,0,.45)}
+.hp-from{display:flex;align-items:baseline;gap:12px;font:700 13px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hp-from b{font:italic 900 clamp(54px,5vw,76px)/.9 var(--head);letter-spacing:0;background:var(--fire);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.06em}
