@@ -53,7 +53,7 @@ contesta por texto para confirmar. `https://nutnbutprius.com/#book` abre la vent
   (Carlos). El Worker (`src/worker.js`, `POST /api/book`) manda la cita al secreto `BOOKING_TO` con el binding `EMAIL`
   (gratis a direcciones verificadas), desde bookings@nutnbutprius.com. Celular: texto por defecto; computadora: correo.
   Protección: campo trampa, límite de 5 por minuto por visitante (`BOOK_LIMIT`), largos máximos, teléfono de 10 a 15 dígitos.
-- **Encendido:** la variable `EMAIL_BOOKING` en `wrangler.jsonc` ("on" la enseña; "off" la esconde y el Worker rechaza).
+- **Encendido (25 nov, después de que la prueba llegó a la bandeja de entrada de Carlos):** la variable `EMAIL_BOOKING` en `wrangler.jsonc` ("on" la enseña; "off" la esconde y el Worker rechaza). info@ sale en la sección del taller, el pie y el JSON-LD.
   Prueba sin encender: `POST /api/book` con el encabezado `x-booking-test` = secreto `BOOKING_TEST_KEY`.
 - Secretos (`npx wrangler secret put …`): `BOOKING_TO` (el Gmail del dueño, no se escribe en este repo público) y `BOOKING_TEST_KEY`.
 
