@@ -1,0 +1,9 @@
+.git
+.gitignore
+.assetsignore
+.wrangler
+node_modules
+src
+wrangler.jsonc
+indexnow.key
+*.md

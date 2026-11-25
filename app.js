@@ -518,6 +518,8 @@ void main(){
     else go(1);
   }
   $$('[data-book]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openBook(a.dataset.book); }));
+  // nutnbutprius.com/#book opens the booking window right away (for the "Book" link on his Google and Facebook pages)
+  if (location.hash === '#book') setTimeout(() => openBook(''), 900);
 
   /* ================= GSAP choreography ================= */
   function splitWords(el) {

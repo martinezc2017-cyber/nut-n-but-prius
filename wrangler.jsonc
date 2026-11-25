@@ -1,0 +1,18 @@
+{
+  // Nut N But Prius — the site on nutnbutprius.com (domain registered in this same Cloudflare account, 24 nov 2026).
+  // The files at the repo root are the site (GitHub Pages serves the same ones as a preview that forwards here).
+  "name": "nutnbutprius",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS",
+    // the Worker goes first only to send www → nutnbutprius.com
+    "run_worker_first": true
+  },
+  "routes": [
+    { "pattern": "nutnbutprius.com", "custom_domain": true },
+    { "pattern": "www.nutnbutprius.com", "custom_domain": true }
+  ],
+  "observability": { "enabled": true }
+}
