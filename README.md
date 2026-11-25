@@ -11,6 +11,8 @@ Página del taller **Nut N But Prius** (Glendale, AZ · 602-815-7122). Hecha por
 - **Compra** Prius 2010–2015 en cualquier condición (que se pueda mover) y **vende** carros revisados por su taller.
 - **Pantalla del tablero (dash display):** solo 2005–2009. Su lista dice «erase the dash display 2010 to 2015»: se leyó como
   «que no salga junto a 2010–2015». Si quería quitarla del todo, se borra la tarjeta 06, la pestaña y la opción `display`.
+- **Por qué escogerlos (sus palabras, 25 nov):** se especializan en estos carros; escaneo de diagnóstico GRATIS para verificar
+  la falla antes de todo, para que no compres la pieza equivocada; respaldan su trabajo, honestos y confiables. Sección `#why`.
 - **Nada 2016 o más nuevo.** Ya no hace «you call I install» (24/7).
 - Pidió «top rated on ChatGPT»: **no se puso**. ChatGPT no califica negocios; sería una calificación inventada con el nombre de
   otra empresa. En su lugar: «Top rated on Google · 4.8 · 100 reviews», que sí es cierto.
