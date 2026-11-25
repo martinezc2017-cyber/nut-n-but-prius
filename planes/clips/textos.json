@@ -1,0 +1,35 @@
+[
+  {
+    "clip": "1_logo",
+    "seccion": "Portada",
+    "primer_cuadro": "1_logo.png",
+    "ultimo_cuadro": "1_logo.png",
+    "segundos": 5,
+    "proporcion": "16:9",
+    "texto": "A cartoon logo illustration comes alive as a short looping animation, keeping the exact flat hand-painted cartoon style, colors and thick black line work of the first frame. Composition: the logo fills the center of the frame. Across the top, brushed lettering reads NUT N BUT in orange and PRIUS in electric blue. Below it, on the left, a wild-eyed brown squirrel is braced on its back legs, both paws gripping a giant acorn and ramming it into the chrome tailpipe of a silver hatchback seen from the rear on the right. The lettering is painted artwork: it stays perfectly still, sharp and identical for the whole clip, every letter keeping its exact shape and color. Action, second by second: from 0 to 1 second the squirrel tenses, its shoulders hunch and its tail fur puffs up and bristles. From 1 to 2.5 seconds it shoves the acorn hard into the tailpipe twice; its whole body jolts forward, its eyes bulge wider and its open mouth screams. With each shove the rear of the car bounces on its suspension and a burst of orange flame and bright yellow sparks spits out around the edges of the acorn. Thin crackles of electric-blue light run along the outlines of the blue letters. From 2.5 to 4 seconds the flames shrink into drifting embers and the squirrel's tail swishes once. From 4 to 5 seconds everything eases back into exactly the pose of the first frame, so the clip loops seamlessly. The shot ends exactly as it began. Light: each burst of flame throws a warm orange glow on the squirrel's fur and the car bumper; the background stays black and deep blue. Camera: locked-off and still for the whole clip; only the squirrel, the car and the effects move. Style: bold cartoon animation, saturated orange, blue and silver, crisp detail, smooth motion. Sound: a comic squeal, a muffled exhaust pop and crackling fire.",
+    "palabras": 321,
+    "caracteres": 1825
+  },
+  {
+    "clip": "2_bateria",
+    "seccion": "Revisión de batería (fondo)",
+    "primer_cuadro": "2_bateria.png",
+    "ultimo_cuadro": "2_bateria.png",
+    "segundos": 5,
+    "proporcion": "16:9",
+    "texto": "Macro shot of an opened hybrid battery pack lying on a dark workbench, exactly as in the first frame: a long row of grey rectangular modules joined by copper bus bars and black and red wires, with a small blue spark at a copper terminal in the middle. Action, second by second: from 0 to 1 second the blue spark at the center terminal flickers brighter. From 1 to 3 seconds thin branching arcs of electric-blue light crawl along the copper bus bars from module to module toward both ends of the pack; each module edge lights up for a moment as the current passes, and tiny white sparks pop off the terminals and fall onto the bench. From 3 to 4 seconds the arcs pulse once more and fade. From 4 to 5 seconds the pack settles back to exactly the first frame, with the single small spark, so the clip loops seamlessly. The shot ends exactly as it began. The modules, wires and bench stay perfectly still and unchanged; only the light and the sparks move. Light: the blue arcs throw cold flickering light across the grey metal tops; the warm orange rim light along the left edge stays steady; the background stays dark. Camera: locked-off macro shot, completely still, with the same shallow depth of field as the first frame. Real photography look, crisp detail, smooth motion. Sound: electric crackle and a low buzz.",
+    "palabras": 237,
+    "caracteres": 1314
+  },
+  {
+    "clip": "3_aire",
+    "seccion": "COLD GAME A/C (fondo)",
+    "primer_cuadro": "3_aire.png",
+    "ultimo_cuadro": "3_aire.png",
+    "segundos": 5,
+    "proporcion": "16:9",
+    "texto": "Close-up of an automotive air conditioning service manifold inside a dark engine bay, exactly as in the first frame: a blue pressure gauge and a red pressure gauge side by side, blue and red hoses, and a frosted aluminum pipe across the foreground. Action, second by second: from 0 to 2 seconds white frost crystals visibly grow and spread along the aluminum pipe and up the brass fittings, glittering as they form, while thin wisps of cold white vapor curl up from the pipe and drift slowly upward and to the right. From 2 to 3.5 seconds the two gauge needles twitch and settle. From 3.5 to 5 seconds the vapor thins and the frost returns to exactly how it looks in the first frame, so the clip loops seamlessly. The shot ends exactly as it began. The gauges, hoses and engine parts stay still and unchanged, and both gauge faces keep their exact markings. Light: cold blue light from above glints on the ice crystals and the gauge glass; the background stays deep black. Camera: locked-off and perfectly still. Real photography look, crisp detail, smooth motion. Sound: a soft hiss of cold gas.",
+    "palabras": 194,
+    "caracteres": 1096
+  }
+]
