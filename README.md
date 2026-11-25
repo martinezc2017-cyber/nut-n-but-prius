@@ -10,8 +10,9 @@ Página del taller **Nut N But Prius** (Glendale, AZ · 602-815-7122). Hecha por
 - **A/C:** $80, cualquier año de Prius que use R-134a.
 - **Compra** Prius 2010–2015 en cualquier condición (que se pueda mover) y **vende** carros revisados por su taller.
 - **Pantalla del tablero (dash display):** solo 2005–2009, $300 (lo confirmó el 25 nov: «leave dash display 2005 to 2009 $300»).
-- **Horario (25 nov):** lunes a viernes desde las 10; sábado con cita; domingo cerrado. No dijo hora de cierre («10 to sometimes»):
-  no se inventó, y por eso no va `openingHoursSpecification` en el JSON-LD. Agendar no ofrece domingos.
+- **Horario (25 nov, su respuesta):** «monday to friday 10 to sometimes, sat with appointment» = lunes a viernes desde las 10 y cierra
+  a distinta hora; sábado con cita; domingo cerrado. En la página: «Mon–Fri from 10 AM · Saturday by appointment». Sin hora de
+  cierre fija, no va `openingHoursSpecification` en el JSON-LD. Agendar no ofrece domingos.
 - **Por qué escogerlos (sus palabras, 25 nov):** se especializan en estos carros; escaneo de diagnóstico GRATIS para verificar
   la falla antes de todo, para que no compres la pieza equivocada; respaldan su trabajo, honestos y confiables. Sección `#why`.
 - **Nada 2016 o más nuevo.** Ya no hace «you call I install» (24/7).
@@ -55,5 +56,5 @@ contesta por texto para confirmar. `https://nutnbutprius.com/#book` abre la vent
 - **El dueño:** en su perfil de Google cambiar «Website» a `https://nutnbutprius.com` y agregar el enlace de citas
   `https://nutnbutprius.com/#book`; lo mismo en su página de Facebook (botón «Book Now»). O agregar a Toro Technology como
   administrador del perfil para hacerlo por él.
-- Hora de cierre (para ponerla en la página y en el JSON-LD). Su perfil de Google solo muestra martes 10–6: lo cambia el dueño.
+- Su perfil de Google solo muestra martes 10–6: el horario lo cambia el dueño desde su perfil.
 - Clips de video (`planes/clips/`): 3 clips de 5 s en bucle con el motor de video de Cartelera, esperando el visto bueno.
