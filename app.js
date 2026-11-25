@@ -282,7 +282,7 @@ void main(){
   /* ================= ride selector ================= */
   const SMS = 'sms:+16028157122?&body=';
   // What the owner does (his messages, 24 nov): 2005–2009 Prius → hybrid batteries, dash displays, inverters;
-  // 2010–2015 Prius → buy, sell & fix anything; A/C → any Prius. Prius only.
+  // 2010–2015 Prius → buy, sell & fix anything; A/C → any Prius up to 2015. Nothing 2016 and newer.
   // `spot` = where that part sits on the car drawing (viewBox 600×230).
   const RIDES = {
     battery: { name: 'Hybrid Battery', years: 'Prius 2005–2009', tag: 'HV BATTERY', spot: [407, 127], cta: 'Book battery service',
@@ -293,8 +293,8 @@ void main(){
       items: ['Inverter diagnosis &amp; repair for 2005–2009 Prius', 'Warning lights on the dash? Text us what it says'] },
     gen3: { name: 'Buy · Sell · Fix', years: 'Prius 2010–2015', tag: '2010–2015', spot: [330, 122], cta: 'Book or ask about a Prius',
       items: ['We buy 2010–2015 Prius', 'We sell 2010–2015 Prius', 'We fix anything on them'] },
-    ac: { name: 'A/C', years: 'Any Prius', tag: 'A/C', spot: [92, 132], cta: 'Book A/C service',
-      items: ['A/C service for any Prius, any year', 'Recovery · vacuum · recharge', 'Starting at $80 — get it while it’s hot!'] },
+    ac: { name: 'A/C', years: 'Any Prius up to 2015', tag: 'A/C', spot: [92, 132], cta: 'Book A/C service',
+      items: ['A/C service for any Prius up to 2015', 'Recovery · vacuum · recharge', 'Starting at $80 — get it while it’s hot!', 'We don’t work on 2016 and newer'] },
   };
   const tabs = $$('.ride-tabs [role=tab]');
   const carBody = $('.car-body');
@@ -353,7 +353,8 @@ void main(){
   $$('#symptoms input').forEach(i => i.addEventListener('change', updateMeter));
 
   /* ================= photos made for the page (optional) ================= */
-  [['.battery-bg', 'assets/bateria.jpg'], ['.ac-bg', 'assets/aire.jpg'], ['.final-bg', 'assets/noche.jpg']].forEach(([sel, src]) => {
+  // (the night-garage photo is a 2016+ Prius, which the shop doesn't work on: not used)
+  [['.battery-bg', 'assets/bateria.jpg'], ['.ac-bg', 'assets/aire.jpg']].forEach(([sel, src]) => {
     const el = $(sel); if (!el) return;
     const im = new Image();
     im.onload = () => { el.style.setProperty('--img', `url("${src}")`); el.classList.add('has-img'); };
@@ -387,12 +388,12 @@ void main(){
   // The page has no server: the booking is a text message to the shop's phone, which he answers to confirm the time.
   const SHOP = '+16028157122';
   const SERVICE_NAME = { battery: 'Hybrid battery', display: 'Dash display', inverter: 'Inverter', gen3: 'Buy · Sell · Fix (2010–2015)', ac: 'A/C service' };
-  // The years offered depend on the service (the owner's own split). A/C is any Prius: by generation.
+  // The years offered depend on the service (the owner's own split). A/C is any Prius up to 2015: by generation.
   const GEN2 = ['2005', '2006', '2007', '2008', '2009'];
   const YEARS = {
     battery: GEN2, display: GEN2, inverter: GEN2,
     gen3: ['2010', '2011', '2012', '2013', '2014', '2015', 'Looking to buy'],
-    ac: ['2001–2003', '2004–2009', '2010–2015', '2016–2022', '2023+'],
+    ac: ['2001–2003', '2004–2009', '2010–2015'], // nothing 2016 and newer
   };
   function buildYears(service) {
     const box = $('#bookYears');

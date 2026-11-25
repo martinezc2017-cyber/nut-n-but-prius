@@ -431,3 +431,6 @@ strong{color:#fff;font-weight:700}
 .btn-fb svg{width:18px;height:18px}
 .foot .copy a{color:var(--blue2);font-weight:700}
 .book-nav .is-off{opacity:.35;pointer-events:none;box-shadow:none}
+
+.opts.years.n3{grid-template-columns:repeat(3,1fr)}
+.services .sec-head .lead{margin-top:14px}
