@@ -281,15 +281,17 @@ void main(){
 
   /* ================= ride selector ================= */
   const SMS = 'sms:+16028157122?&body=';
+  // 2005–2009 Prius only (the client, 24 nov): hybrid batteries, dash displays, A/C and inverters — nothing else.
+  // `spot` = where that part sits on the car drawing (viewBox 600×230).
   const RIDES = {
-    gen2: { name: 'Prius Gen 2', years: '2004–2009', tag: 'GEN 2', cta: 'Text about my Gen 2', body: 'Hi! I have a Prius Gen 2 and need help with ',
-      items: ['Hybrid battery repair &amp; services', 'Battery install — you call, I install, 24/7', 'R134a A/C recharge, starting at $80'] },
-    gen3: { name: 'Prius Gen 3', years: '2010–2015', tag: 'GEN 3', cta: 'Text about my Gen 3', body: 'Hi! I have a Prius Gen 3 and need help with ',
-      items: ['Hybrid battery repair &amp; services', 'Battery install — you call, I install, 24/7', 'Buy · Sell · Fix — 2010–2015 Prius', 'R134a A/C recharge, starting at $80'] },
-    ct: { name: 'Lexus CT 200h', years: '2011–2017', tag: 'CT 200H', cta: 'Text about my CT 200h', body: 'Hi! I have a Lexus CT 200h and need help with ',
-      items: ['Hybrid battery repair &amp; services', 'Battery install — you call, I install, 24/7', 'R134a A/C recharge, starting at $80'] },
-    any: { name: 'Any Make', years: 'All makes &amp; models', tag: 'A/C', cta: 'Book my A/C recharge', body: 'Hi! I need an A/C recharge for my ',
-      items: ['R134a freon recharge for all makes &amp; models', 'Recovery · vacuum · recharge', 'Starting at just $80 — get it while it’s hot!'] },
+    battery: { name: 'Hybrid Battery', tag: 'HV BATTERY', spot: [407, 127], cta: 'Text about my battery', body: 'Hi! My 2005-2009 Prius hybrid battery ',
+      items: ['Diagnosis, repair &amp; service of the hybrid battery pack', 'Red triangle, “Check Hybrid System” or mileage dropping? Start here', 'Not sure? Take the battery check below'] },
+    display: { name: 'Dash Display', tag: 'DISPLAY', spot: [268, 96], cta: 'Text about my display', body: 'Hi! My Prius dash display ',
+      items: ['Dash display gone dark, dim or flickering', 'We fix the display on 2005–2009 Prius'] },
+    ac: { name: 'A/C', tag: 'A/C', spot: [92, 132], cta: 'Book my A/C service', body: 'Hi! I need A/C service for my Prius. ',
+      items: ['A/C service for 2005–2009 Prius', 'Recovery · vacuum · recharge', 'Starting at $80 — get it while it’s hot!'] },
+    inverter: { name: 'Inverter', tag: 'INVERTER', spot: [150, 116], cta: 'Text about my inverter', body: 'Hi! I think my Prius inverter ',
+      items: ['Inverter diagnosis &amp; repair for 2005–2009 Prius', 'Warning lights on the dash? Text us what it says'] },
   };
   const tabs = $$('.ride-tabs [role=tab]');
   const carBody = $('.car-body');
@@ -299,11 +301,11 @@ void main(){
     const d = RIDES[key]; if (!d) return;
     tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.ride === key)));
     $('#rideName').innerHTML = d.name;
-    $('#rideYears').innerHTML = d.years;
     $('#rideTag').textContent = d.tag;
+    $('#spot').setAttribute('transform', 'translate(' + d.spot[0] + ' ' + d.spot[1] + ')');
     $('#rideList').innerHTML = d.items.map(i => `<li>${i}</li>`).join('');
     const cta = $('#rideCta'); cta.textContent = d.cta; cta.href = SMS + encodeURIComponent(d.body);
-    $('.ride-visual').classList.toggle('ac-mode', key === 'any');
+    $('#spot').classList.toggle('cold', key === 'ac');
     if (animate && !reduce) {
       const info = $('.ride-info'); info.classList.remove('swap'); void info.offsetWidth; info.classList.add('swap');
       const car = $('#car'); car.classList.remove('zap'); void car.offsetWidth; car.classList.add('zap');
@@ -321,7 +323,7 @@ void main(){
       n.focus(); selectRide(n.dataset.ride);
     });
   });
-  selectRide('gen3', false);
+  selectRide('battery', false);
 
   /* ================= battery check ================= */
   const MSG = ['Sounding healthy. Keep rolling.', 'Could be nothing — or the start of it. Worth a check.', 'Your battery may be getting weak. Get it checked.',
