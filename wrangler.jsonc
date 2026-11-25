@@ -14,5 +14,11 @@
     { "pattern": "nutnbutprius.com", "custom_domain": true },
     { "pattern": "www.nutnbutprius.com", "custom_domain": true }
   ],
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Booking by email (25 nov): the Worker mails the request to the secret BOOKING_TO (a verified Email Routing address;
+  // free on every plan for verified destinations). EMAIL_BOOKING "on" shows the option on the page.
+  "send_email": [{ "name": "EMAIL" }],
+  "vars": { "EMAIL_BOOKING": "off" },
+  // at most 5 booking emails per minute from one visitor
+  "ratelimits": [{ "name": "BOOK_LIMIT", "namespace_id": "2511", "simple": { "limit": 5, "period": 60 } }]
 }

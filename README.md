@@ -42,9 +42,20 @@ Página del taller **Nut N But Prius** (Glendale, AZ · 602-815-7122). Hecha por
 3. Guardar en GitHub: `git commit` y `git push`.
 
 ## Cómo funciona «Book Now»
-Ventana de 4 pasos (servicio → año → día y hora → nombre). 7 servicios: batería, inversor, Gen 3, pantalla, vender mi Prius, comprar un Prius y A/C. Los años dependen del servicio (comprar: «¿qué año buscas?», con «Any year»). En el celular, el último botón abre
+Ventana de 4 pasos (servicio → año → día y hora → nombre, y si está encendido, texto o correo). 7 servicios: batería, inversor, Gen 3, pantalla, vender mi Prius, comprar un Prius y A/C. Los años dependen del servicio (comprar: «¿qué año buscas?», con «Any year»). En el celular, el último botón abre
 Mensajes con la cita ya escrita para el 602-815-7122; en computadora enseña el texto para copiarlo. No aparta horario: el dueño
 contesta por texto para confirmar. `https://nutnbutprius.com/#book` abre la ventana directo (para el botón de citas de Google y Facebook).
+
+## Correo (25 nov)
+- **info@nutnbutprius.com** reenvía al Gmail del dueño (Cloudflare Email Routing, gratis; regla «info to owner»). El dueño ya
+  verificó su dirección. Él prefiere texto («I respond faster»).
+- **Citas por correo:** en el paso 4 de agendar, «Send it by Text / Email». Email = teléfono obligatorio, ubicación opcional
+  (Carlos). El Worker (`src/worker.js`, `POST /api/book`) manda la cita al secreto `BOOKING_TO` con el binding `EMAIL`
+  (gratis a direcciones verificadas), desde bookings@nutnbutprius.com. Celular: texto por defecto; computadora: correo.
+  Protección: campo trampa, límite de 5 por minuto por visitante (`BOOK_LIMIT`), largos máximos, teléfono de 10 a 15 dígitos.
+- **Encendido:** la variable `EMAIL_BOOKING` en `wrangler.jsonc` ("on" la enseña; "off" la esconde y el Worker rechaza).
+  Prueba sin encender: `POST /api/book` con el encabezado `x-booking-test` = secreto `BOOKING_TEST_KEY`.
+- Secretos (`npx wrangler secret put …`): `BOOKING_TO` (el Gmail del dueño, no se escribe en este repo público) y `BOOKING_TEST_KEY`.
 
 ## De dónde salen los datos
 - Logo: foto principal de su perfil de Google Maps (original, 1230×1278).

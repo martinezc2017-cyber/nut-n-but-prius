@@ -508,6 +508,23 @@
       <input id="bookName" name="name" type="text" autocomplete="name" placeholder="First name" maxlength="60">
       <label class="book-label" for="bookNotes">What’s happening? <span>(optional)</span></label>
       <textarea id="bookNotes" name="notes" rows="3" maxlength="400" placeholder="Warning lights, noises, miles, condition…"></textarea>
+      <!-- email option (owner, 25 nov: he prefers text; by email the phone is required, the location optional). Shown only
+           when the site says email booking is on. -->
+      <div class="send-how" id="sendHow" hidden>
+        <p class="book-label">Send it by</p>
+        <div class="opts how" data-name="how">
+          <button type="button" class="opt" data-value="text" aria-pressed="true"><b>Text</b><small>Fastest reply</small></button>
+          <button type="button" class="opt" data-value="email" aria-pressed="false"><b>Email</b><small>Sent from this page</small></button>
+        </div>
+        <div class="how-email" id="howEmail" hidden>
+          <label class="book-label" for="bookPhone">Your phone number</label>
+          <input id="bookPhone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="(602) 555-0123" maxlength="30">
+          <label class="book-label" for="bookLoc">Where’s the car? <span>(optional)</span></label>
+          <input id="bookLoc" name="location" type="text" autocomplete="address-level2" placeholder="City or cross streets" maxlength="120">
+          <input class="hp" id="bookHp" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        </div>
+        <p class="book-err" id="bookErr" hidden></p>
+      </div>
     </fieldset>
 
     <div class="book-step book-done" data-step="5">

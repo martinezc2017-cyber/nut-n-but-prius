@@ -558,3 +558,11 @@ section[id]{scroll-margin-top:108px}
 /* the "we buy" card: content centered instead of a big empty gap above the button */
 .car-deal:not(.deal-buy){justify-content:center}
 .car-deal:not(.deal-buy) .btn{margin-top:4px}
+
+/* booking by email (shown only when the site turns it on) */
+.send-how{margin-top:4px}
+.opts.how{grid-template-columns:1fr 1fr;margin-bottom:14px}
+.how-email{animation:swap .35s cubic-bezier(.2,.8,.2,1)}
+.book .hp{position:absolute!important;left:-9999px;width:1px;height:1px;opacity:0}
+.book-err{margin:6px 0 0;padding:12px 14px;border-radius:12px;font-size:14px;color:#ffd0c4;background:rgba(255,58,18,.12);box-shadow:inset 0 0 0 1px rgba(255,58,18,.45)}
+.book-err a{color:#fff;font-weight:700}

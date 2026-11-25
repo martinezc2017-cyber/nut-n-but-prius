@@ -413,9 +413,12 @@ void main(){
   const DONE_PHONE = 'Your messages app opened with your booking. Hit <b>send</b> and he’ll text you back to confirm your time.';
   const dlg = $('#book');
   const coarse = matchMedia('(pointer: coarse)').matches;
-  const state = { step: 1, service: '', year: '', day: '', time: '' };
+  const state = { step: 1, service: '', year: '', day: '', time: '', how: 'text' };
+  let emailOn = false; // the site turns the email option on (GET /api/book) once the owner's address is verified
   const steps = $$('.book-step', dlg);
   const nextBtn = $('#bookNext'), backBtn = $('#bookBack'), nameIn = $('#bookName'), notesIn = $('#bookNotes'), sendA = $('#bookSend');
+  const phoneIn = $('#bookPhone'), locIn = $('#bookLoc'), errEl = $('#bookErr');
+  const phoneOk = () => { const d = phoneIn.value.replace(/\D/g, ''); return d.length >= 10 && d.length <= 15; };
 
   function buildDays() {
     const box = $('#bookDays');
@@ -437,13 +440,14 @@ void main(){
     $$('.opt', group).forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
     state[group.dataset.name] = btn.dataset.value;
     if (group.dataset.name === 'service') buildYears(btn.dataset.value);
+    if (group.dataset.name === 'how') { $('#howEmail').hidden = state.how !== 'email'; errEl.hidden = true; }
     refresh();
   }
   function ready() {
     if (state.step === 1) return !!state.service;
     if (state.step === 2) return !!state.year;
     if (state.step === 3) return !!state.day && !!state.time;
-    if (state.step === 4) return nameIn.value.trim().length > 0;
+    if (state.step === 4) return nameIn.value.trim().length > 0 && (state.how !== 'email' || phoneOk());
     return true;
   }
   function refresh() {
@@ -451,7 +455,7 @@ void main(){
     nextBtn.textContent = state.step === 4 ? 'Send request' : 'Next';
     // On phones the last button is a real link to Messages that the customer taps: in-app browsers
     // (Facebook, Instagram) can block a script from opening it, but they let a tapped link through.
-    const touchSend = coarse && state.step === 4;
+    const touchSend = coarse && state.step === 4 && state.how !== 'email';
     nextBtn.hidden = touchSend;
     sendA.hidden = !touchSend;
     if (touchSend) {
@@ -489,6 +493,7 @@ void main(){
   nextBtn.addEventListener('click', () => {
     if (!ready()) return;
     if (state.step < 4) { go(state.step + 1); return; }
+    if (state.how === 'email') { sendEmail(); return; }
     const body = message();
     go(5);
     if (coarse) {
@@ -502,6 +507,29 @@ void main(){
   });
   backBtn.addEventListener('click', () => { if (state.step > 1) go(state.step - 1); });
   nameIn.addEventListener('input', refresh);
+  phoneIn.addEventListener('input', refresh);
+  // booking by email: the page sends it to the shop; he texts the customer back at the phone they typed
+  async function sendEmail() {
+    nextBtn.disabled = true; nextBtn.textContent = 'Sending…'; errEl.hidden = true;
+    const payload = { service: SERVICE_NAME[state.service], year: yearLabel(), day: state.day, time: state.time,
+      name: nameIn.value.trim(), phone: phoneIn.value.trim(), location: locIn.value.trim(), notes: notesIn.value.trim(), website: $('#bookHp').value };
+    let ok = false;
+    try {
+      const r = await fetch('/api/book', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(payload) });
+      ok = r.ok && (await r.json()).ok === true;
+    } catch (_) { ok = false; }
+    if (ok) {
+      go(5);
+      $('.book-done h3').textContent = 'Request sent!';
+      $('#doneText').innerHTML = 'Sent! He’ll text you at <b></b> to confirm your time.';
+      $('#doneText b').textContent = payload.phone;
+      return;
+    }
+    errEl.innerHTML = 'Couldn’t send it right now. Please text or call <a href="tel:+16028157122">602.815.7122</a>.';
+    errEl.hidden = false;
+    refresh();
+  }
+  fetch('/api/book').then(r => r.json()).then(j => { emailOn = j.email === true; $('#sendHow').hidden = !emailOn; }).catch(() => {});
   notesIn.addEventListener('input', refresh);
   sendA.addEventListener('click', e => {
     if (!ready()) { e.preventDefault(); return; }
@@ -516,13 +544,17 @@ void main(){
   dlg.addEventListener('close', () => { if (lenis) lenis.start(); });
   function openBook(service) {
     if (typeof dlg.showModal !== 'function') { window.location.href = 'tel:' + SHOP; return; }
-    Object.assign(state, { step: 1, service: '', year: '', day: '', time: '' });
+    // phones: text by default (the owner answers texts faster); computers can't text, so email there when it's on
+    Object.assign(state, { step: 1, service: '', year: '', day: '', time: '', how: emailOn && !coarse ? 'email' : 'text' });
     buildDays();
-    $$('.opt', dlg).forEach(b => b.setAttribute('aria-pressed', 'false'));
-    nameIn.value = ''; notesIn.value = '';
+    $$('.opt', dlg).forEach(b => b.setAttribute('aria-pressed', String(b.closest('[data-name="how"]') ? b.dataset.value === state.how : false)));
+    $('#howEmail').hidden = state.how !== 'email';
+    errEl.hidden = true;
+    nameIn.value = ''; notesIn.value = ''; phoneIn.value = ''; locIn.value = ''; $('#bookHp').value = '';
     $('#doneDesk').hidden = true;
     $('#doneCopy').textContent = 'Copy message';
     $('#doneText').innerHTML = DONE_PHONE;
+    $('.book-done h3').textContent = 'Request ready!';
     dlg.showModal();
     if (lenis) lenis.stop();
     if (SERVICE_NAME[service]) { pick($('.opts[data-name="service"]', dlg), $(`.opt[data-value="${service}"]`, dlg)); go(2); }
