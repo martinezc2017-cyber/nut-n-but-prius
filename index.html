@@ -49,7 +49,7 @@
       "priceSpecification": { "@type": "PriceSpecification", "minPrice": 2200, "priceCurrency": "USD" } },
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Factory ABS pump installed, 2010–2015 Prius" }, "price": 2200, "priceCurrency": "USD" },
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Gen 3 Prius repair (2010–2015): suspension, A/C compressor, overheating, maintenance, full tune-ups" } },
-    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Prius dash display repair (2005–2009)" } },
+    { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Prius dash display repair (2005–2009)" }, "price": 300, "priceCurrency": "USD" },
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Prius A/C service (any year with R-134a)" }, "price": 80, "priceCurrency": "USD" },
     { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "We buy 2010–2015 Prius in any condition" } },
     { "@type": "Offer", "itemOffered": { "@type": "Product", "name": "Quality used Prius, checked by our shop" } }
@@ -220,6 +220,9 @@
         <div class="card-icon"><svg viewBox="0 0 48 48" aria-hidden="true"><rect x="5" y="10" width="38" height="24" rx="3"/><path d="M17 40h14M24 34v6"/><path class="bolt" d="M13 26l6-8 5 5 6-8 5 6v5H13z"/></svg></div>
         <h3>Dash Display</h3>
         <p class="card-years">Prius 2005–2009</p>
+        <ul class="card-prices">
+          <li><span>Dash display repair</span><b>$300</b></li>
+        </ul>
         <p>Dash display gone dark, dim or flickering? We fix it.</p>
         <a class="card-link" href="#book" data-book="display">Book display repair <i>→</i></a>
       </article>
@@ -271,7 +274,7 @@
       <button role="tab" aria-selected="false" data-ride="inverter"><b>Inverter</b><small>2005–2015</small></button>
       <button role="tab" aria-selected="false" data-ride="gen3"><b>Gen 3 Repair</b><small>2010–2015</small></button>
       <button role="tab" aria-selected="false" data-ride="ac"><b>A/C</b><small>R-134a · $80</small></button>
-      <button role="tab" aria-selected="false" data-ride="display"><b>Dash Display</b><small>2005–2009</small></button>
+      <button role="tab" aria-selected="false" data-ride="display"><b>Dash Display</b><small>2005–2009 · $300</small></button>
     </div>
     <div class="ride-panel reveal" id="ridePanel" role="tabpanel">
       <div class="ride-visual">
@@ -409,6 +412,10 @@
         <span class="stars" aria-hidden="true">★★★★★</span>
         <span>Top rated: <b>4.8</b> on Google · 100 reviews</span>
       </div>
+      <dl class="hours reveal">
+        <div><dt>Mon – Fri</dt><dd>From 10 AM</dd></div>
+        <div><dt>Saturday</dt><dd>By appointment</dd></div>
+      </dl>
       <div class="cta-row reveal">
         <a class="btn btn-ghost" href="https://maps.app.goo.gl/rAPdTweNfF9WgdxV7" target="_blank" rel="noopener">Google reviews <i>→</i></a>
         <a class="btn btn-ghost btn-fb" href="https://www.facebook.com/share/1AB5XqAZhd/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 8h3V4h-3c-2.8 0-4.5 1.8-4.5 4.6V11H7v4h2.5v9h4v-9H17l.5-4h-4V8.9c0-.6.3-.9.9-.9z"/></svg>See our work</a>
@@ -424,7 +431,7 @@
   <div class="wrap final-inner">
     <h2 class="final-title"><span class="ft">BOOK.</span> <span class="ft">FIX.</span> <span class="ft fire-text">DRIVE.</span></h2>
     <a class="final-phone" href="tel:+16028157122">602.815.7122</a>
-    <p class="final-sub">Prius only · 35th Ave &amp; Bell Rd, Glendale, AZ 85308</p>
+    <p class="final-sub">Prius only · 35th Ave &amp; Bell Rd, Glendale, AZ 85308<br>Mon–Fri from 10 AM · Saturday by appointment</p>
     <div class="cta-row center">
       <a class="btn btn-fire" href="#book" data-book="">Book Now</a>
       <a class="btn btn-volt" href="tel:+16028157122">Call</a>
@@ -442,7 +449,7 @@
 <footer class="foot">
   <div class="wrap foot-inner">
     <a class="brand" href="#top"><img src="assets/ardilla.jpg" alt="" class="brand-face" width="44" height="44"><span class="brand-word"><b class="w-nut">NUT N BUT</b><b class="w-prius">PRIUS</b></span></a>
-    <p>Hybrid batteries &amp; inverters (2005–2015) · Gen 3 repair (2010–2015) · Dash displays (2005–2009) · A/C (R-134a) · We buy &amp; sell (2010–2015) · No 2016+<br>35th Ave &amp; Bell Rd, Glendale, AZ 85308 · <a href="tel:+16028157122">602.815.7122</a></p>
+    <p>Hybrid batteries &amp; inverters (2005–2015) · Gen 3 repair (2010–2015) · Dash displays (2005–2009) · A/C (R-134a) · We buy &amp; sell (2010–2015) · No 2016+<br>35th Ave &amp; Bell Rd, Glendale, AZ 85308 · <a href="tel:+16028157122">602.815.7122</a><br>Mon–Fri from 10 AM · Saturday by appointment</p>
     <p class="copy"><a href="https://www.facebook.com/share/1AB5XqAZhd/" target="_blank" rel="noopener">Facebook</a> · © 2026 Nut N But Prius<br><span class="credit">Website by <a href="https://toro-ride.com" target="_blank" rel="noopener">Toro Technology LLC</a></span></p>
   </div>
 </footer>
@@ -470,7 +477,7 @@
         <button type="button" class="opt" data-value="battery" aria-pressed="false"><b>Hybrid Battery</b><small>2005–2015 · from $600</small></button>
         <button type="button" class="opt" data-value="inverter" aria-pressed="false"><b>Inverter</b><small>2005–2015</small></button>
         <button type="button" class="opt" data-value="gen3" aria-pressed="false"><b>Gen 3 Repair</b><small>2010–2015 · anything</small></button>
-        <button type="button" class="opt" data-value="display" aria-pressed="false"><b>Dash Display</b><small>2005–2009</small></button>
+        <button type="button" class="opt" data-value="display" aria-pressed="false"><b>Dash Display</b><small>2005–2009 · $300</small></button>
         <button type="button" class="opt" data-value="sell" aria-pressed="false"><b>Sell My Prius</b><small>2010–2015 · any condition</small></button>
         <button type="button" class="opt" data-value="buy" aria-pressed="false"><b>Buy a Prius</b><small>Checked by our shop</small></button>
         <button type="button" class="opt opt-ice opt-wide" data-value="ac" aria-pressed="false"><b>A/C</b><small>Any Prius with R-134a · $80</small></button>
@@ -491,7 +498,7 @@
         <button type="button" class="opt" data-value="afternoon" aria-pressed="false"><b>Afternoon</b></button>
         <button type="button" class="opt" data-value="any time" aria-pressed="false"><b>Any time</b></button>
       </div>
-      <p class="book-note">He’ll text you back to confirm the exact time.</p>
+      <p class="book-note">Mon–Fri from 10 AM · Saturday by appointment. He’ll text you back to confirm the exact time.</p>
     </fieldset>
 
     <fieldset class="book-step" data-step="4">

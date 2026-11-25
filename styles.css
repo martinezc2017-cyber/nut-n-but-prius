@@ -544,3 +544,9 @@ strong{color:#fff;font-weight:700}
 section[id]{scroll-margin-top:108px}
 @media (max-width:900px){ .hero{padding-top:134px} }
 @media (max-width:480px){ .topbar{gap:7px;font-size:12.5px;letter-spacing:.03em} .topbar .tb-long,.topbar .tb-go{display:none} .topbar b{font-size:20px} .topbar em{padding:3px 6px} }
+
+/* hours (owner, 25 nov: «monday to friday 10 to sometimes, sat with appointment») */
+.hours{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:-10px 0 28px}
+.hours div{padding:14px 16px;border-radius:14px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+.hours dt{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--orange2)}
+.hours dd{margin:6px 0 0;font:italic 800 22px/1 var(--head);text-transform:uppercase;color:#fff}

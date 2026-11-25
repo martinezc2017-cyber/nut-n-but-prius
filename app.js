@@ -296,7 +296,7 @@ void main(){
     ac: { name: 'A/C', years: 'Any year Prius with R-134a', tag: 'A/C', car: 'gen2', spot: [6, 56], cta: 'Book A/C service',
       items: ['A/C service for any year Prius that runs R-134a — $80', 'Recovery · vacuum · recharge', 'Not sure which gas yours takes? It’s on the sticker under the hood', 'Get it while it’s hot!'] },
     display: { name: 'Dash Display', years: 'Prius 2005–2009', tag: 'DISPLAY', car: 'gen2', spot: [31, 34], cta: 'Book display repair',
-      items: ['Dash display gone dark, dim or flickering', 'We fix the display on 2005–2009 Prius'] },
+      items: ['Dash display repair — $300', 'Dash display gone dark, dim or flickering', 'For 2005–2009 Prius'] },
   };
   // Real photos from Wikimedia Commons (CC BY-SA): background removed; the 2005–2009 one mirrored to face left.
   const CARS = {
@@ -421,8 +421,11 @@ void main(){
     const box = $('#bookDays');
     box.innerHTML = '';
     const now = new Date();
-    for (let i = 0; i < 8; i++) {
+    // open Mon–Fri, Saturday by appointment, closed Sunday (owner, 25 nov): 8 open days, no Sundays
+    for (let i = 0, shown = 0; shown < 8; i++) {
       const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+      if (d.getDay() === 0) continue;
+      shown++;
       const label = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-US', { weekday: 'short' });
       const sub = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const value = d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
