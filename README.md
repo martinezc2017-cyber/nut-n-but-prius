@@ -5,7 +5,7 @@ Página del taller **Nut N But Prius** (Glendale, AZ · 602-815-7122). Hecha por
 ## Lo que hace el taller (lista del dueño, 25 nov 2026; reemplaza la del 24 nov)
 - **Batería híbrida, Prius 2005–2015:** reacondicionada desde $600 instalada; nueva $3,500 instalada.
 - **Inversores, Prius 2005–2015.**
-- **Prius 2010–2015 (Gen 3), «you name it, we can fix it»:** cambio de motor JDM desde $2,200; bomba de ABS de fábrica instalada
+- **Prius 2010–2015 (Gen 3), «you name it, we can fix it», y «full service» (lo pidió el 25 nov; va arriba, en la tarjeta y en el selector):** cambio de motor JDM desde $2,200; bomba de ABS de fábrica instalada
   $2,200; suspensión; compresor de A/C; sobrecalentamiento; mantenimiento; afinaciones completas.
 - **A/C:** $80, cualquier año de Prius que use R-134a.
 - **Compra** Prius 2010–2015 en cualquier condición (que se pueda mover) y **vende** carros revisados por su taller.

@@ -292,7 +292,7 @@ void main(){
     inverter: { name: 'Inverter', years: 'Prius 2005–2015', tag: 'INVERTER', car: 'gen2', spot: [14, 45], cta: 'Book inverter repair',
       items: ['Inverter diagnosis &amp; repair for 2005–2015 Prius', 'Warning lights on the dash? Text us what it says'] },
     gen3: { name: 'Gen 3 Repair', years: 'Prius 2010–2015 · you name it, we fix it', tag: 'GEN 3', car: 'gen3', spot: [19, 31], cta: 'Book Gen 3 repair',
-      items: ['JDM engine swaps — starting at $2,200', 'Factory ABS pumps installed — $2,200', 'Suspension · A/C compressor · overheating issues', 'Maintenance &amp; full tune-ups'] },
+      items: ['JDM engine swaps — starting at $2,200', 'Factory ABS pumps installed — $2,200', 'Full service · maintenance · full tune-ups', 'Suspension · A/C compressor · overheating issues'] },
     ac: { name: 'A/C', years: 'Any year Prius with R‑134a', tag: 'A/C', car: 'gen2', spot: [6, 56], cta: 'Book A/C service',
       items: ['A/C service for any year Prius that runs R‑134a — $80', 'Recovery · vacuum · recharge', 'Not sure which gas yours takes? It’s on the sticker under the hood', 'Get it while it’s hot!'] },
     display: { name: 'Dash Display', years: 'Prius 2005–2009', tag: 'DISPLAY', car: 'gen2', spot: [31, 34], cta: 'Book display repair',

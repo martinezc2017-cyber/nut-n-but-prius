@@ -574,3 +574,6 @@ section[id]{scroll-margin-top:108px}
 /* booking number on the done screen (25 nov) */
 .done-ref{margin:14px auto 0;display:inline-block;padding:8px 14px;border-radius:999px;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--line2)}
 .done-ref b{margin-left:6px;color:#fff;letter-spacing:.08em}
+
+/* "Full service" (owner, 25 nov) stands out in the Gen 3 card */
+.card p b.full-svc{color:#fff}
