@@ -18,6 +18,8 @@ Página del taller **Nut N But Prius** (Glendale, AZ · 602-815-7122). Hecha por
 - **25 nov 12:56 (su mensaje):** «2016 and up full service, prices vary» (franja azul bajo las tarjetas y opción en agendar, años
   2016–2026; dijo que mandará más datos) · el diagnóstico es gratis **solo si le hacen el trabajo**, si no **$120** (corregido en
   todos lados) · **instalación a domicilio** con cobro de viaje (tarjeta de batería y selector). Ya no hace «you call I install» (24/7).
+- **25 nov 1:14 pm:** «prius only» (se queda) y **Lexus CT 200h 2012–2017, full service** (segunda franja, opción en agendar con años
+  2012–2017; el mensaje dice «2014 Lexus CT 200h»).
 - Pidió «top rated on ChatGPT»: **no se puso**. ChatGPT no califica negocios; sería una calificación inventada con el nombre de
   otra empresa. En su lugar: «Top rated on Google · 4.8 · 100 reviews», que sí es cierto.
 

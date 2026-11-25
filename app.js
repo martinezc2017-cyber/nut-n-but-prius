@@ -394,20 +394,20 @@ void main(){
   /* ================= booking: 4 steps, then the request goes to the shop by text ================= */
   // The page has no server: the booking is a text message to the shop's phone, which he answers to confirm the time.
   const SHOP = '+16028157122';
-  const SERVICE_NAME = { battery: 'Hybrid battery', inverter: 'Inverter', gen3: 'Gen 3 repair', display: 'Dash display', sell: 'Sell my Prius', buy: 'Buy a Prius', new: 'Full service (2016 & newer)', ac: 'A/C service ($80)' };
+  const SERVICE_NAME = { battery: 'Hybrid battery', inverter: 'Inverter', gen3: 'Gen 3 repair', display: 'Dash display', sell: 'Sell my Prius', buy: 'Buy a Prius', new: 'Full service (2016 & newer)', lexus: 'Lexus CT 200h full service', ac: 'A/C service ($80)' };
   // The years offered depend on the service (the owner's own split). A/C is any Prius with R‑134a: by generation.
   const span = (from, to) => Array.from({ length: to - from + 1 }, (_, i) => String(from + i));
   const GEN2 = span(2005, 2009), GEN3 = span(2010, 2015);
   const YEARS = {
     battery: span(2005, 2015), inverter: span(2005, 2015), display: GEN2,
-    gen3: GEN3, sell: GEN3, buy: GEN3.concat('Any year'), new: span(2016, 2026),
+    gen3: GEN3, sell: GEN3, buy: GEN3.concat('Any year'), new: span(2016, 2026), lexus: span(2012, 2017),
     ac: ['2001–2003', '2004–2009', '2010–2015'], // the R‑134a years; nothing 2016 and newer
   };
   function buildYears(service) {
     const box = $('#bookYears');
     const list = YEARS[service] || GEN2;
     box.className = 'opts years n' + list.length;
-    $('#yearsLegend').textContent = service === 'buy' ? 'What year are you looking for?' : 'What year is your Prius?';
+    $('#yearsLegend').textContent = service === 'buy' ? 'What year are you looking for?' : service === 'lexus' ? 'What year is your CT 200h?' : 'What year is your Prius?';
     box.innerHTML = list.map(y => `<button type="button" class="opt${y.length > 4 ? ' opt-long' : ''}" data-value="${y}" aria-pressed="false"><b>${y}</b></button>`).join('');
     state.year = '';
   }
@@ -481,7 +481,7 @@ void main(){
       'When: ' + state.day + ', ' + state.time, 'Name: ' + nameIn.value.trim()].concat(notes ? ['Notes: ' + notes] : []).join('\n');
   }
   const smsLink = body => 'sms:' + SHOP + '?&body=' + encodeURIComponent(body);
-  const yearLabel = () => (state.year === 'Any year' ? 'Any 2010–2015 Prius' : state.year + ' Prius');
+  const yearLabel = () => (state.year === 'Any year' ? 'Any 2010–2015 Prius' : state.year + (state.service === 'lexus' ? ' Lexus CT 200h' : ' Prius'));
   function go(n) {
     state.step = n;
     steps.forEach(s => s.classList.toggle('on', Number(s.dataset.step) === n));
