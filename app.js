@@ -386,7 +386,7 @@ void main(){
     if (!id || id[0] !== '#') return; const el = id.length > 1 ? $(id) : $('#top');
     if (!el) return;
     e.preventDefault();
-    if (lenis) lenis.scrollTo(el, { offset: id === '#top' ? 0 : -70, duration: 1.4 });
+    if (lenis) lenis.scrollTo(el, { offset: id === '#top' ? 0 : -108, duration: 1.4 }); // nav + battery bar
     else el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
   }));
 

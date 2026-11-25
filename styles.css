@@ -527,3 +527,20 @@ strong{color:#fff;font-weight:700}
 .hp-what em{font-style:normal;padding:7px 12px;border-radius:999px;font:700 14px/1 var(--body);letter-spacing:.08em;color:#ffd9bf;background:rgba(255,106,0,.12);box-shadow:inset 0 0 0 1px rgba(255,106,0,.45)}
 .hp-from{display:flex;align-items:baseline;gap:12px;font:700 13px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .hp-from b{font:italic 900 clamp(54px,5vw,76px)/.9 var(--head);letter-spacing:0;background:var(--fire);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.06em}
+
+/* battery bar fixed at the very top (owner: «at top of page … starting from $600 2005 to 2015») */
+.topbar{position:fixed;inset:0 0 auto 0;z-index:92;height:38px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 14px;
+  background:linear-gradient(90deg,#ffd23f,#ff9a1f 35%,#ff6a00 70%,#ff3a12);color:#140600;font:800 14px/1 var(--body);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;
+  box-shadow:0 6px 24px -6px rgba(255,90,0,.7)}
+.topbar svg{width:16px;height:16px;fill:#140600;flex:0 0 auto}
+.topbar em{font-style:normal;padding:3px 8px;margin-left:4px;border-radius:999px;background:rgba(20,6,0,.14)}
+.topbar b{font:italic 900 22px/1 var(--head);letter-spacing:0;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.25)}
+.topbar i{font-style:normal}
+.topbar .tb-go{transition:transform .25s}
+.topbar:hover .tb-go{transform:translateX(4px)}
+.progress{z-index:93}
+.nav{top:38px}
+.hero{padding-top:148px}
+section[id]{scroll-margin-top:108px}
+@media (max-width:900px){ .hero{padding-top:134px} }
+@media (max-width:480px){ .topbar{gap:7px;font-size:12.5px;letter-spacing:.03em} .topbar .tb-long,.topbar .tb-go{display:none} .topbar b{font-size:20px} .topbar em{padding:3px 6px} }
