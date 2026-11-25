@@ -281,20 +281,22 @@ void main(){
 
   /* ================= ride selector ================= */
   const SMS = 'sms:+16028157122?&body=';
-  // What the owner does (his messages, 24 nov): 2005–2009 Prius → hybrid batteries, dash displays, inverters;
-  // 2010–2015 Prius → buy, sell & fix anything; A/C → any Prius up to 2015. Nothing 2016 and newer.
+  // What the owner does (his list, 25 nov): hybrid batteries 2005–2015 (reconditioned from $600 installed, new $3,500 installed);
+  // inverters 2005–2015; 2010–2015 (Gen 3) "you name it, we fix it": JDM engine swaps from $2,200, factory ABS pumps installed
+  // $2,200, suspension, A/C compressor, overheating, maintenance, full tune-ups; A/C $80 for any year Prius with R-134a;
+  // dash displays only 2005–2009; buys 2010–2015 Prius in any condition (must be movable) and sells shop-checked cars. No 2016+.
   // `car` = which real photo (gen2 = 2005–2009, gen3 = 2010–2015); `spot` = where that part sits on that photo, in % (x, y).
   const RIDES = {
-    battery: { name: 'Hybrid Battery', years: 'Prius 2005–2009', tag: 'HV BATTERY', car: 'gen2', spot: [68, 62], cta: 'Book battery service',
-      items: ['Diagnosis, repair &amp; service of the hybrid battery pack', 'Red triangle, “Check Hybrid System” or mileage dropping? Start here', 'Not sure? Take the battery check below'] },
+    battery: { name: 'Hybrid Battery', years: 'Prius 2005–2015', tag: 'HV BATTERY', car: 'gen3', spot: [73, 56], cta: 'Book battery service',
+      items: ['Reconditioned battery: starting at $600 installed', 'Brand-new battery: $3,500 installed', 'Red triangle, “Check Hybrid System” or mileage dropping? Start here', 'Not sure? Take the battery check below'] },
+    inverter: { name: 'Inverter', years: 'Prius 2005–2015', tag: 'INVERTER', car: 'gen2', spot: [14, 45], cta: 'Book inverter repair',
+      items: ['Inverter diagnosis &amp; repair for 2005–2015 Prius', 'Warning lights on the dash? Text us what it says'] },
+    gen3: { name: 'Gen 3 Repair', years: 'Prius 2010–2015 · you name it, we fix it', tag: 'GEN 3', car: 'gen3', spot: [19, 31], cta: 'Book Gen 3 repair',
+      items: ['JDM engine swaps — starting at $2,200', 'Factory ABS pumps installed — $2,200', 'Suspension · A/C compressor · overheating issues', 'Maintenance &amp; full tune-ups'] },
+    ac: { name: 'A/C', years: 'Any year Prius with R-134a', tag: 'A/C', car: 'gen2', spot: [6, 56], cta: 'Book A/C service',
+      items: ['A/C service for any year Prius that runs R-134a — $80', 'Recovery · vacuum · recharge', 'Not sure which gas yours takes? It’s on the sticker under the hood', 'Get it while it’s hot!'] },
     display: { name: 'Dash Display', years: 'Prius 2005–2009', tag: 'DISPLAY', car: 'gen2', spot: [31, 34], cta: 'Book display repair',
       items: ['Dash display gone dark, dim or flickering', 'We fix the display on 2005–2009 Prius'] },
-    inverter: { name: 'Inverter', years: 'Prius 2005–2009', tag: 'INVERTER', car: 'gen2', spot: [14, 45], cta: 'Book inverter repair',
-      items: ['Inverter diagnosis &amp; repair for 2005–2009 Prius', 'Warning lights on the dash? Text us what it says'] },
-    gen3: { name: 'Buy · Sell · Fix', years: 'Prius 2010–2015', tag: '2010–2015', car: 'gen3', spot: [55, 45], cta: 'Book or ask about a Prius',
-      items: ['We buy 2010–2015 Prius', 'We sell 2010–2015 Prius', 'We fix anything on them'] },
-    ac: { name: 'A/C', years: 'Any Prius up to 2015', tag: 'A/C', car: 'gen2', spot: [6, 56], cta: 'Book A/C service',
-      items: ['A/C service for any Prius up to 2015', 'Recovery · vacuum · recharge', 'Starting at $80 — get it while it’s hot!', 'We don’t work on 2016 and newer'] },
   };
   // Real photos from Wikimedia Commons (CC BY-SA): background removed; the 2005–2009 one mirrored to face left.
   const CARS = {
@@ -391,18 +393,20 @@ void main(){
   /* ================= booking: 4 steps, then the request goes to the shop by text ================= */
   // The page has no server: the booking is a text message to the shop's phone, which he answers to confirm the time.
   const SHOP = '+16028157122';
-  const SERVICE_NAME = { battery: 'Hybrid battery', display: 'Dash display', inverter: 'Inverter', gen3: 'Buy · Sell · Fix (2010–2015)', ac: 'A/C service' };
-  // The years offered depend on the service (the owner's own split). A/C is any Prius up to 2015: by generation.
-  const GEN2 = ['2005', '2006', '2007', '2008', '2009'];
+  const SERVICE_NAME = { battery: 'Hybrid battery', inverter: 'Inverter', gen3: 'Gen 3 repair', display: 'Dash display', sell: 'Sell my Prius', buy: 'Buy a Prius', ac: 'A/C service ($80)' };
+  // The years offered depend on the service (the owner's own split). A/C is any Prius with R-134a: by generation.
+  const span = (from, to) => Array.from({ length: to - from + 1 }, (_, i) => String(from + i));
+  const GEN2 = span(2005, 2009), GEN3 = span(2010, 2015);
   const YEARS = {
-    battery: GEN2, display: GEN2, inverter: GEN2,
-    gen3: ['2010', '2011', '2012', '2013', '2014', '2015', 'Looking to buy'],
-    ac: ['2001–2003', '2004–2009', '2010–2015'], // nothing 2016 and newer
+    battery: span(2005, 2015), inverter: span(2005, 2015), display: GEN2,
+    gen3: GEN3, sell: GEN3, buy: GEN3.concat('Any year'),
+    ac: ['2001–2003', '2004–2009', '2010–2015'], // the R-134a years; nothing 2016 and newer
   };
   function buildYears(service) {
     const box = $('#bookYears');
     const list = YEARS[service] || GEN2;
     box.className = 'opts years n' + list.length;
+    $('#yearsLegend').textContent = service === 'buy' ? 'What year are you looking for?' : 'What year is your Prius?';
     box.innerHTML = list.map(y => `<button type="button" class="opt${y.length > 4 ? ' opt-long' : ''}" data-value="${y}" aria-pressed="false"><b>${y}</b></button>`).join('');
     state.year = '';
   }
@@ -455,11 +459,11 @@ void main(){
   }
   function message() {
     const notes = notesIn.value.trim();
-    return ['Booking request — Nut N But Prius', 'Service: ' + SERVICE_NAME[state.service], 'Car: ' + yearLabel(),
+    return ['Booking request — Nut N But Prius', 'Service: ' + SERVICE_NAME[state.service], (state.service === 'buy' ? 'Looking for: ' : 'Car: ') + yearLabel(),
       'When: ' + state.day + ', ' + state.time, 'Name: ' + nameIn.value.trim()].concat(notes ? ['Notes: ' + notes] : []).join('\n');
   }
   const smsLink = body => 'sms:' + SHOP + '?&body=' + encodeURIComponent(body);
-  const yearLabel = () => (state.year === 'Looking to buy' ? 'Looking to buy a Prius' : state.year + ' Prius');
+  const yearLabel = () => (state.year === 'Any year' ? 'Any 2010–2015 Prius' : state.year + ' Prius');
   function go(n) {
     state.step = n;
     steps.forEach(s => s.classList.toggle('on', Number(s.dataset.step) === n));
