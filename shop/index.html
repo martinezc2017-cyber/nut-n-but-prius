@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#060708">
+<title>Bookings · Nut N But Prius</title>
+<link rel="icon" href="/favicon.ico">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,800;1,900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/shop/shop.css">
+</head>
+<body>
+<!-- The owner's page (25 nov 2026): every booking from the site lands here with its number, so none gets lost. -->
+<header class="top">
+  <img src="/assets/icon-192.png" alt="" width="40" height="40">
+  <h1>BOOKINGS</h1>
+  <a class="out" href="/shop/logout">Log out</a>
+</header>
+
+<main class="wrap">
+  <section class="counts" id="counts" aria-label="Numbers"></section>
+
+  <section class="block" id="pendingBlock" hidden>
+    <h2>To confirm <span class="badge" id="pendingN"></span></h2>
+    <p class="hint">Text or call them, then tap the booking and mark it <b>Confirmed</b> with the time.</p>
+    <div class="list" id="pendingList"></div>
+  </section>
+
+  <section class="block">
+    <div class="cal-head">
+      <button type="button" class="nav" id="prev" aria-label="Previous month">‹</button>
+      <h2 id="monthName"></h2>
+      <button type="button" class="nav" id="next" aria-label="Next month">›</button>
+    </div>
+    <div class="cal" id="cal" role="grid"></div>
+    <div class="legend"><span class="st-new">To confirm</span><span class="st-confirmed">Confirmed</span><span class="st-done">Done</span><span class="st-canceled">Canceled / no-show</span></div>
+  </section>
+
+  <section class="block">
+    <h2 id="dayName"></h2>
+    <div class="list" id="dayList"></div>
+  </section>
+
+  <section class="block" id="noDateBlock" hidden>
+    <h2>No day picked</h2>
+    <div class="list" id="noDateList"></div>
+  </section>
+</main>
+
+<button type="button" class="fab" id="addBtn">+ Add booking</button>
+
+<!-- one booking -->
+<dialog class="sheet" id="detail">
+  <form method="dialog" class="sheet-card" id="detailForm">
+    <button type="button" class="x" data-close aria-label="Close">✕</button>
+    <p class="ref" id="dRef"></p>
+    <h3 id="dTitle"></h3>
+    <p class="via" id="dVia"></p>
+    <dl class="info" id="dInfo"></dl>
+    <div class="row" id="dContact"></div>
+    <p class="label">Status</p>
+    <div class="status" id="dStatus">
+      <button type="button" data-st="new">To confirm</button>
+      <button type="button" data-st="confirmed">Confirmed</button>
+      <button type="button" data-st="done">Done</button>
+      <button type="button" data-st="no-show">No-show</button>
+      <button type="button" data-st="canceled">Canceled</button>
+    </div>
+    <div class="two">
+      <label>Day<input type="date" id="dDay"></label>
+      <label>Exact time<input type="time" id="dTime"></label>
+    </div>
+    <label>Customer phone<input type="tel" id="dPhone" placeholder="Add it if they texted you"></label>
+    <label>Your note<textarea id="dNote" rows="2" placeholder="Price, parts, anything to remember"></textarea></label>
+    <div class="row">
+      <button type="button" class="btn ghost" id="dIcs">Add to my phone calendar</button>
+      <button type="button" class="btn fire" id="dSave">Save</button>
+    </div>
+    <p class="msg" id="dMsg" hidden></p>
+  </form>
+</dialog>
+
+<!-- add one by hand (a call, a walk-in) -->
+<dialog class="sheet" id="add">
+  <form class="sheet-card" id="addForm">
+    <button type="button" class="x" data-close aria-label="Close">✕</button>
+    <h3>Add booking</h3>
+    <label>Name<input id="aName" required maxlength="60" autocomplete="off"></label>
+    <label>Phone<input id="aPhone" type="tel" maxlength="30" autocomplete="off"></label>
+    <label>Service<select id="aService">
+      <option>Hybrid battery</option><option>Inverter</option><option>Gen 3 repair</option><option>Dash display</option>
+      <option>A/C service ($80)</option><option>Sell my Prius</option><option>Buy a Prius</option><option>Other</option>
+    </select></label>
+    <label>Car<input id="aCar" maxlength="40" placeholder="2012 Prius" autocomplete="off"></label>
+    <div class="two">
+      <label>Day<input type="date" id="aDay"></label>
+      <label>Time<input type="time" id="aTime"></label>
+    </div>
+    <label>Notes<textarea id="aNotes" rows="2" maxlength="400"></textarea></label>
+    <button type="submit" class="btn fire wide">Save booking</button>
+    <p class="msg" id="aMsg" hidden></p>
+  </form>
+</dialog>
+
+<script src="/shop/shop.js" defer></script>
+</body>
+</html>

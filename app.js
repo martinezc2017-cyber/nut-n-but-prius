@@ -413,7 +413,7 @@ void main(){
   const DONE_PHONE = 'Your messages app opened with your booking. Hit <b>send</b> and he’ll text you back to confirm your time.';
   const dlg = $('#book');
   const coarse = matchMedia('(pointer: coarse)').matches;
-  const state = { step: 1, service: '', year: '', day: '', time: '', how: 'text' };
+  const state = { step: 1, service: '', year: '', day: '', date: '', time: '', how: 'text' };
   let emailOn = false; // the site turns the email option on (GET /api/book) once the owner's address is verified
   // booking number, same shape the Worker uses: NNB-MMDD-XXXX (Arizona date, no look-alike characters)
   let ref = '';
@@ -440,7 +440,8 @@ void main(){
       const label = i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-US', { weekday: 'short' });
       const sub = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       const value = d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-      box.insertAdjacentHTML('beforeend', `<button type="button" class="opt" data-value="${value}" aria-pressed="false"><b>${label}</b><small>${sub}</small></button>`);
+      const iso = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+      box.insertAdjacentHTML('beforeend', `<button type="button" class="opt" data-value="${value}" data-iso="${iso}" aria-pressed="false"><b>${label}</b><small>${sub}</small></button>`);
     }
   }
   function pick(group, btn) {
@@ -448,6 +449,7 @@ void main(){
     $$('.opt', group).forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
     state[group.dataset.name] = btn.dataset.value;
     if (group.dataset.name === 'service') buildYears(btn.dataset.value);
+    if (group.dataset.name === 'day') state.date = btn.dataset.iso || '';
     if (group.dataset.name === 'how') { $('#howEmail').hidden = state.how !== 'email'; errEl.hidden = true; }
     refresh();
   }
@@ -502,6 +504,7 @@ void main(){
     if (!ready()) return;
     if (state.step < 4) { go(state.step + 1); return; }
     if (state.how === 'email') { sendEmail(); return; }
+    logText();
     const body = message();
     go(5);
     if (coarse) {
@@ -516,10 +519,19 @@ void main(){
   backBtn.addEventListener('click', () => { if (state.step > 1) go(state.step - 1); });
   nameIn.addEventListener('input', refresh);
   phoneIn.addEventListener('input', refresh);
+  // a booking sent by text is recorded (once) for the shop's calendar, with the same number that goes in the text
+  let logged = false;
+  function logText() {
+    if (logged) return;
+    logged = true;
+    const rec = { ref, service: SERVICE_NAME[state.service], year: yearLabel(), day: state.day, date: state.date, time: state.time,
+      name: nameIn.value.trim(), notes: notesIn.value.trim(), website: $('#bookHp') ? $('#bookHp').value : '' };
+    try { navigator.sendBeacon('/api/book/log', JSON.stringify(rec)); } catch (_) { /* the text still reaches him */ }
+  }
   // booking by email: the page sends it to the shop; he texts the customer back at the phone they typed
   async function sendEmail() {
     nextBtn.disabled = true; nextBtn.textContent = 'Sending…'; errEl.hidden = true;
-    const payload = { service: SERVICE_NAME[state.service], year: yearLabel(), day: state.day, time: state.time,
+    const payload = { service: SERVICE_NAME[state.service], year: yearLabel(), day: state.day, date: state.date, time: state.time,
       name: nameIn.value.trim(), phone: phoneIn.value.trim(), location: locIn.value.trim(), notes: notesIn.value.trim(), website: $('#bookHp').value };
     let ok = false;
     try {
@@ -543,6 +555,7 @@ void main(){
   notesIn.addEventListener('input', refresh);
   sendA.addEventListener('click', e => {
     if (!ready()) { e.preventDefault(); return; }
+    logText();
     setTimeout(() => go(5), 60); // let the tap open Messages, then show the confirmation
   });
   $('#bookForm').addEventListener('submit', e => { e.preventDefault(); nextBtn.click(); });
@@ -555,7 +568,8 @@ void main(){
   function openBook(service) {
     if (typeof dlg.showModal !== 'function') { window.location.href = 'tel:' + SHOP; return; }
     // phones: text by default (the owner answers texts faster); computers can't text, so email there when it's on
-    Object.assign(state, { step: 1, service: '', year: '', day: '', time: '', how: emailOn && !coarse ? 'email' : 'text' });
+    Object.assign(state, { step: 1, service: '', year: '', day: '', date: '', time: '', how: emailOn && !coarse ? 'email' : 'text' });
+    logged = false;
     buildDays();
     $$('.opt', dlg).forEach(b => b.setAttribute('aria-pressed', String(b.closest('[data-name="how"]') ? b.dataset.value === state.how : false)));
     $('#howEmail').hidden = state.how !== 'email';
@@ -665,4 +679,15 @@ void main(){
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
     $$('.reveal').forEach(el => io.observe(el));
   }
+
+  /* ================= counters for the shop: taps on Book / Call / Text / Directions / Facebook / Email ================= */
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a,[data-book]');
+    if (!a) return;
+    const h = a.getAttribute('href') || '';
+    const ev = a.hasAttribute('data-book') ? 'book_open' : h.startsWith('tel:') ? 'call' : h.startsWith('mailto:') ? 'email'
+      : (h.startsWith('sms:') && a.id !== 'bookSend' && a.id !== 'doneSms') ? 'text' : /maps\.app|google\.com\/maps/.test(h) ? 'directions'
+      : /facebook\.com/.test(h) ? 'facebook' : '';
+    if (ev) try { navigator.sendBeacon('/api/ev', ev); } catch (_) { /* counting never blocks a tap */ }
+  }, true);
 })();

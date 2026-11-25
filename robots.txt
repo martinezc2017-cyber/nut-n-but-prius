@@ -1,4 +1,6 @@
 User-agent: *
+Disallow: /shop/
+Disallow: /api/
 Allow: /
 
 Sitemap: https://nutnbutprius.com/sitemap.xml

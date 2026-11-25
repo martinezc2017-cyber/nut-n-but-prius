@@ -61,6 +61,21 @@ contesta por texto para confirmar. `https://nutnbutprius.com/#book` abre la vent
   mensaje de texto y en la pantalla final del cliente. Sin base de datos: sirve para identificar la cita, no lleva cuenta.
 - El correo lleva el logo arriba (`assets/email-logo.jpg`, 480×320).
 
+## Calendario del taller: nutnbutprius.com/shop (25 nov)
+Carlos: «con calendario, por cada agenda, para que no se le pase o se le pierda».
+- **Cada cita queda guardada** en D1 (`nutnbutprius`, tablas en `db/schema.sql`) con su número: las de correo las guarda el Worker;
+  las de texto, la página al tocar enviar (`POST /api/book/log`; el texto en sí va de teléfono a teléfono, así que si el cliente
+  no lo manda, en el calendario aparece pero el texto no llega); y las que el dueño agrega a mano (llamadas, gente que llega).
+- **La página /shop** (contraseña = secreto `SHOP_PASSWORD`, se cambia con `npx wrangler secret put SHOP_PASSWORD`; la sesión dura
+  6 meses en ese teléfono): contadores (por confirmar, próximos 7 días, visitas, citas en línea, toques a llamar y texto),
+  calendario del mes, lista del día, «por confirmar», y cada cita con Text/Call, estado (por confirmar, confirmada, terminada,
+  no llegó, cancelada), día y hora exacta, nota, y «Add to my phone calendar» (.ics con alarma una hora antes).
+- **Correo diario** a las 8 AM de Arizona (cron `0 15 * * *`) con las citas del día y las que faltan por confirmar; si no hay
+  nada, no manda. Prueba sin molestar al dueño: `POST /api/daily-test` con `x-booking-test` (va a `BOOKING_TEST_TO`).
+- **Visitas y toques:** el Worker cuenta cada vez que una persona abre la página (no robots) y la página avisa los toques a
+  Book, Call, Text, Directions, Facebook y Email (`POST /api/ev`). /shop y /api no entran a Google (robots.txt + noindex).
+- Ver o borrar datos: `npx wrangler d1 execute nutnbutprius --remote --command "SELECT * FROM bookings"`.
+
 ## De dónde salen los datos
 - Logo: foto principal de su perfil de Google Maps (original, 1230×1278).
 - Dirección (35th Ave & Bell Rd, Glendale, AZ 85308), calificación (4.8 ★, 100 reseñas) y Facebook: su perfil de Google Maps.

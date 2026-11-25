@@ -20,5 +20,9 @@
   "send_email": [{ "name": "EMAIL" }],
   "vars": { "EMAIL_BOOKING": "on" },
   // at most 5 booking emails per minute from one visitor
-  "ratelimits": [{ "name": "BOOK_LIMIT", "namespace_id": "2511", "simple": { "limit": 5, "period": 60 } }]
+  "ratelimits": [{ "name": "BOOK_LIMIT", "namespace_id": "2511", "simple": { "limit": 5, "period": 60 } }],
+  // the shop's bookings and counters (schema in db/schema.sql); the owner sees them at /shop (password: secret SHOP_PASSWORD)
+  "d1_databases": [{ "binding": "DB", "database_name": "nutnbutprius", "database_id": "919b6686-19cd-49f8-9bf2-97b06ca72c62" }],
+  // 15:00 UTC = 8 AM Arizona (no daylight saving there): the day's bookings to the owner's email
+  "triggers": { "crons": ["0 15 * * *"] }
 }
