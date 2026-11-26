@@ -76,7 +76,7 @@ async function book(request, env, ctx) {
   const text = ['New booking request from nutnbutprius.com', ''].concat(rows.map(([k, v]) => k + ': ' + v),
     ['', 'Text or call the customer at ' + f.phone + ' to confirm the time.', 'All bookings: ' + SITE + '/shop']).join('\n');
   const html = '<div style="font:16px/1.5 Arial,sans-serif;color:#111">'
-    + '<img src="' + LOGO + '" width="200" height="133" alt="Nut N But Prius" style="display:block;border-radius:12px;margin:0 0 14px">'
+    + '<img src="' + LOGO + '" width="200" height="154" alt="Nut N But Prius" style="display:block;border-radius:12px;margin:0 0 14px">'
     + '<h2 style="margin:0 0 12px">New booking request</h2><table cellpadding="6" style="border-collapse:collapse">'
     + rows.map(([k, v]) => '<tr><td style="color:#666;vertical-align:top">' + k + '</td><td><b>' + esc(v).replace(/\n/g, '<br>') + '</b></td></tr>').join('')
     + '</table><p style="margin-top:18px"><a href="sms:' + tel + '" style="background:#ff6a00;color:#fff;padding:12px 18px;border-radius:24px;text-decoration:none;font-weight:bold">Text ' + esc(f.phone) + '</a>'
@@ -205,7 +205,7 @@ async function dailyEmail(env, to = env.BOOKING_TO, test = false) {
   const lines = ['Good morning! Here is today at Nut N But Prius.', '', 'TODAY (' + today + '):']
     .concat(day.results.length ? day.results.map(line) : ['No bookings for today.'], ['', 'STILL TO CONFIRM:'],
       pend.results.length ? pend.results.map(b => (b.day || 'no day') + ' · ' + line(b)) : ['None.'], ['', 'Open your calendar: ' + SITE + '/shop']);
-  const html = '<div style="font:16px/1.5 Arial,sans-serif;color:#111"><img src="' + LOGO + '" width="160" height="107" alt="" style="display:block;border-radius:10px;margin:0 0 12px">'
+  const html = '<div style="font:16px/1.5 Arial,sans-serif;color:#111"><img src="' + LOGO + '" width="160" height="123" alt="" style="display:block;border-radius:10px;margin:0 0 12px">'
     + lines.map(l => /^(TODAY|STILL)/.test(l) ? '<h3 style="margin:16px 0 6px">' + esc(l) + '</h3>' : l ? '<div>' + esc(l) + '</div>' : '').join('')
     + '<p><a href="' + SITE + '/shop" style="background:#ff6a00;color:#fff;padding:12px 18px;border-radius:24px;text-decoration:none;font-weight:bold">Open calendar</a></p></div>';
   await env.EMAIL.send({ to, from: FROM, subject: (test ? '[TEST] ' : '') + `Today: ${day.results.length} booking${day.results.length === 1 ? '' : 's'} · ${pend.results.length} to confirm`, text: lines.join('\n'), html });

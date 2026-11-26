@@ -63,7 +63,7 @@ contesta por texto para confirmar. `https://nutnbutprius.com/#book` abre la vent
   `BOOKING_TEST_KEY` y `BOOKING_TEST_TO` (las pruebas van ahí con «[TEST]» en el asunto, nunca al dueño).
 - **Número de cita:** NNB-MMDD-XXXX (fecha de Arizona + 4 caracteres sin parecidos). Va en el asunto y arriba del correo, en el
   mensaje de texto y en la pantalla final del cliente. Sin base de datos: sirve para identificar la cita, no lleva cuenta.
-- El correo lleva el logo arriba (`assets/email-logo.jpg`, 480×320).
+- El correo lleva el logo arriba (`assets/email-logo.jpg`, 480×370; en el correo va a 200×154 y 160×123).
 
 ## Calendario del taller: nutnbutprius.com/shop (25 nov)
 Carlos: «con calendario, por cada agenda, para que no se le pase o se le pierda».
@@ -81,7 +81,12 @@ Carlos: «con calendario, por cada agenda, para que no se le pase o se le pierda
 - Ver o borrar datos: `npx wrangler d1 execute nutnbutprius --remote --command "SELECT * FROM bookings"`.
 
 ## De dónde salen los datos
-- Logo: foto principal de su perfil de Google Maps (original, 1230×1278).
+- Logo: **el NUEVO que mandó el dueño por texto el 25 nov 2026** («can you change my logo to this one»): el mismo arte (ardilla, bellota,
+  Prius) sobre la bandera de Estados Unidos, 1428×1102. De ese archivo salen `assets/logo.jpg` (compartir y ficha de Google),
+  `assets/mascota.jpg` (portada), `assets/ardilla.jpg` (la cara, 256×256: marca de arriba y de abajo), `favicon.ico`, `icon-192.png`,
+  `apple-touch-icon.png` y `assets/email-logo.jpg`. Como es más alto que el anterior, en celulares bajos (menos de 700 px de alto) el arte
+  va un poco más angosto para que la primera pantalla enseñe lo mismo que antes (regla al final de `styles.css`).
+  El anterior era la foto principal de su perfil de Google Maps (1230×1278, con el letrero del teléfono); sigue en el historial de git.
 - Dirección (35th Ave & Bell Rd, Glendale, AZ 85308), calificación (4.8 ★, 100 reseñas) y Facebook: su perfil de Google Maps.
 - Foto del taller: la que mandó el dueño. Fotos de ambiente (batería, manómetros): hechas con IA para la página.
 - No hay reseñas ni cifras inventadas.

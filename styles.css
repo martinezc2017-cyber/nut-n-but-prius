@@ -593,3 +593,7 @@ section[id]{scroll-margin-top:108px}
 
 /* both bands line up: same width for the left column on wider screens */
 @media (min-width:641px){ .newer{grid-template-columns:42% 1fr auto} }
+
+/* New logo (owner, 25 nov 2026) is taller than the old one (1428x1102 vs 1230x821). On short phones the art gets a bit narrower so it
+   takes the same height as before and the first screen still shows "Hybrid batteries 2005 to 2015" above the Book/Call/Text bar. */
+@media (max-width:900px) and (max-height:700px){ .hero-art{width:min(398px,86.5%)} }
